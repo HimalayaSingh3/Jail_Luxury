@@ -48,7 +48,7 @@ const BAG_CATEGORIES = [
     title: "DUFFLE",
     subtitle: "BAGS",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image8.png",
     imageAlt: "Duffle Bag",
     imageMaxWidth: "200vh",
@@ -60,7 +60,7 @@ const BAG_CATEGORIES = [
     title: "SLING",
     subtitle: "BAGS",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image7.png",
     imageAlt: "Sling Bag",
     imageMaxWidth: "200vh",
@@ -72,7 +72,7 @@ const BAG_CATEGORIES = [
     title: "WALLETS",
     subtitle: "",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image6.png",
     imageAlt: "Premium wallets",
     imageMaxWidth: "200vh",
@@ -84,7 +84,7 @@ const BAG_CATEGORIES = [
     title: "TROLLEY",
     subtitle: "",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image5.png",
     imageAlt: "Trolley",
     imageMaxWidth: "200vh",
@@ -96,7 +96,7 @@ const BAG_CATEGORIES = [
     title: "JACKETS",
     subtitle: "",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image4.png",
     imageAlt: "Jackets",
     imageMaxWidth: "200vh",
@@ -108,7 +108,7 @@ const BAG_CATEGORIES = [
     title: "GLOVES",
     subtitle: "",
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image3.png",
     imageAlt: "Gloves",
     imageMaxWidth: "200vh",
