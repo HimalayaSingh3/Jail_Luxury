@@ -4,9 +4,8 @@ import {
   Box,
   Typography,
   IconButton,
-  useTheme,
-  Button,
   useMediaQuery,
+  Button,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -122,151 +121,137 @@ export default function CategoryCarousel({ mode = "light" }) {
         )}
       </Box>
 
-     <Box
-  sx={{
-    display: "grid",
-    gridTemplateColumns: {
-      xs: "1fr",
-      sm: "repeat(2, 1fr)",
-      md: "repeat(3, 1fr)",
-    },
-    justifyContent: "center",
-    justifyItems: "center",
-    gap: 4,
-    width: "100%",
-    mt: 4,
-  }}
->
-  {[
-    {
-      title: "Travel Essentials",
-      img: "/travel.jpg", // ✅ Make sure these images are in your public folder
-    },
-    {
-      title: "Hydro Collection",
-      img: "/hydro.png",
-    },
-    {
-      title: "New Arrival",
-      img: "/new.png",
-    },
-  ].map((item, index) => (
-    <Box
-      key={index}
-      sx={{
-        backgroundImage: `url(${item.img})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        height: { xs: 460, sm: 400, md: 445 },
-        width: { xs: 350, md: 382 },
-        padding: 2,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-end",
-        alignItems: "start",
-        cursor: "pointer",
-        position: "relative",
-        transition: "transform 0.3s ease-in-out",
-  "&:hover": {
-    transform: "scale(1.05)",
-  },
-      }}
-    >
-      <Typography
-        variant="h6"
+      {/* Collection Grid */}
+      <Box
         sx={{
-          fontSize: { xs: "18px", sm: "20px" },
-          fontWeight: 600,
-          color: "white",
-          mb: 1,
-        }}
-      >
-        {item.title}
-      </Typography>
-      <Button
-        variant="contained"
-        sx={{
-          height: 33,
-          borderRadius: "0px",
-          width: 178.75,
-          fontSize: "13.75px",
-          bgcolor: "white",
-          color: "black",
-          "&:hover": {
-            bgcolor: "grey.300",
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, 1fr)",
+            md: "repeat(3, 1fr)",
           },
+          justifyContent: "center",
+          justifyItems: "center",
+          gap: 4,
+          width: "100%",
+          mt: 4,
         }}
       >
-        View Collection
-      </Button>
-    </Box>
-  ))}
-</Box>
+        {[
+          { title: "Travel Essentials", img: "/travel.jpg" },
+          { title: "Hydro Collection", img: "/hydro.png" },
+          { title: "New Arrival", img: "/new.png" },
+        ].map((item, index) => (
+          <Box
+            key={index}
+            sx={{
+              backgroundImage: `url(${item.img})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              height: { xs: 300, sm: 400, md: 450 },
+              width: "100%",
+              p: 2,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+              cursor: "pointer",
+              position: "relative",
+              transition: "transform 0.3s ease-in-out",
+              "&:hover": { transform: "scale(1.03)" },
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: { xs: "18px", sm: "20px", md: "22px" },
+                fontWeight: 600,
+                color: "white",
+                mb: 1,
+              }}
+            >
+              {item.title}
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{
+                height: 34,
+                width: 180,
+                borderRadius: 0,
+                fontSize: "14px",
+                bgcolor: "white",
+                color: "black",
+                "&:hover": {
+                  bgcolor: "grey.300",
+                },
+              }}
+            >
+              View Collection
+            </Button>
+          </Box>
+        ))}
+      </Box>
 
-    <Box
-  sx={{
-    display: "grid",
-    gridTemplateColumns: {
-      xs: "1fr",
-      sm: "repeat(2, 1fr)",
-      md: "repeat(2, 1fr)",
-    },
-    justifyContent: "center",
-    justifyItems: "center",
-    gap: 4,
-    width: "100%",
-    mt: 4,
-  }}
->
-  {[
-    {
-      title: "FOR HIM",
-      img: "/him.jpg", // ✅ Corrected path
-    },
-    {
-      title: "FOR HER",
-      img: "/her.jpg", // ✅ Corrected path
-    },
-  ].map((item, index) => (
-    <Box
-      key={index}
-      sx={{
-        backgroundImage: `url(${item.img})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        height: { xs: 320, sm: 400, md: 563 },
-        width: { xs: 380, md: 625 },
-        padding: {xs:0, md:2},
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        // justifyContent: "flex-center",
-        cursor: "pointer",
-        transition: "transform 0.3s ease-in-out",
-  "&:hover": {
-    transform: "scale(1.05)",
-  },
-      }}
-    >
-      <Typography
-        variant="h6"
+      {/* For Him / Her Section */}
+      <Box
         sx={{
-          position:"relative",
-          top:{xs:"150px", md:"250px"},
-          fontSize: { xs: "18px", sm: "30px" },
-          fontWeight: 600,
-          color: "white",
-          mb: 2,
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, 1fr)",
+          },
+          gap: 4,
+          width: "100%",
+          mt: 4,
         }}
       >
-        {item.title}
-      </Typography>
-    </Box>
-  ))}
-</Box>
-
+        {[
+          { title: "FOR HIM", img: "/him.jpg" },
+          { title: "FOR HER", img: "/her.jpg" },
+        ].map((item, index) => (
+          <Box
+            key={index}
+            sx={{
+              position: "relative",
+              backgroundImage: `url(${item.img})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              height: { xs: 320, sm: 400, md: 500 },
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              transition: "transform 0.3s ease-in-out",
+              "&:hover": { transform: "scale(1.03)" },
+            }}
+          >
+            <Box
+              sx={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: 600,
+                  color: "white",
+                  fontSize: { xs: "22px", sm: "28px", md: "34px" },
+                  textAlign: "center",
+                }}
+              >
+                {item.title}
+              </Typography>
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </CardContainer>
   );
 }
