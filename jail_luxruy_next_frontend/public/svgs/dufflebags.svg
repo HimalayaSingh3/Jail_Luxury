@@ -1,0 +1,18 @@
+<svg width="52" height="42" viewBox="0 0 52 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 257">
+<g id="Group 256">
+<path id="Rectangle 423" d="M1.23736 19.3231C1.11048 17.5468 2.54987 16.0517 4.32968 16.111L26 16.8333L47.6861 16.1105C49.4603 16.0513 50.8975 17.5372 50.7794 19.3084L50.1667 28.5L50.7794 37.6916C50.8975 39.4628 49.4603 40.9487 47.6861 40.8895L26 40.1667L4.30007 40.89C2.53089 40.949 1.09555 39.4712 1.20597 37.7045L1.83333 27.6667L1.23736 19.3231Z" stroke="#363230" stroke-width="2"/>
+<rect id="Rectangle 424" x="11" y="16" width="2" height="25" fill="#363230"/>
+<rect id="Rectangle 428" x="37.6665" y="22.6665" width="1.66667" height="23.3333" transform="rotate(90 37.6665 22.6665)" fill="#363230"/>
+<rect id="Rectangle 429" x="37.6665" y="34.3335" width="1.66667" height="23.3333" transform="rotate(90 37.6665 34.3335)" fill="#363230"/>
+<rect id="Rectangle 427" x="9" y="16" width="2" height="25" fill="#363230"/>
+<rect id="Rectangle 425" x="39" y="16" width="2" height="25" fill="#363230"/>
+<rect id="Rectangle 426" x="41" y="17" width="2" height="23" fill="#363230"/>
+<path id="Ellipse 48" d="M41 19.3333C41 9.20811 34.2843 1 26 1C17.7157 1 11 9.20811 11 19.3333" stroke="#363230" stroke-width="2"/>
+<path id="Ellipse 49" d="M41 24.3333C41 14.2081 34.2843 6 26 6C17.7157 6 11 14.2081 11 24.3333" stroke="#363230" stroke-width="2"/>
+<line id="Line 30" x1="33.6665" y1="24.3335" x2="33.6665" y2="26.0002" stroke="#363230" stroke-width="2"/>
+</g>
+<path id="Line 34" d="M11.5 20L11.5 37" stroke="#D7D1C9" stroke-linecap="round"/>
+<path id="Line 35" d="M40.5 20V37" stroke="#D7D1C9" stroke-linecap="round"/>
+</g>
+</svg>

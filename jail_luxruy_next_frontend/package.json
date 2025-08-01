@@ -1,0 +1,33 @@
+{
+  "name": "jail_luxury_next_app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.1",
+    "@mui/material": "^6.4.1",
+    "@next/font": "^14.2.15",
+    "axios": "^1.7.9",
+    "framer-motion": "^12.3.1",
+    "gsap": "^3.12.7",
+    "jose": "^5.9.6",
+    "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
+    "next": "^15.4.4",
+    "razorpay": "^2.9.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.6"
+  }
+}

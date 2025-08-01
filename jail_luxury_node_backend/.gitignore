@@ -1,0 +1,59 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build directories
+dist/
+build/
+
+# Environment variables
+.env
+
+# IDE settings and configurations
+.idea/
+.vscode/
+*.swp
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# npm cache
+.npm/
+
+# Temporary files
+tmp/
+temp/
+
+# Debug files
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage files
+coverage/
+
+# Test output
+/coverage/
+.nyc_output/
+
+# Build artifacts
+*.out
+*.map
+
+# Local package files
+*.tgz
+
+# Yarn Integrity
+.yarn-integrity
+
+# PM2 logs
+pids/
+pm2-log.txt

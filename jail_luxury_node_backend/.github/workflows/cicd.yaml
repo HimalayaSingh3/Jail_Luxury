@@ -1,0 +1,44 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - UAT
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Authenticate to Google Cloud
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # Set up Google Cloud SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # Configure Docker for Artifact Registry
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker us-east-1-docker.pkg.dev --quiet
+
+      # Build and push Docker image
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t us-east-1-docker.pkg.dev/jail-luxury-backend-node-dev/my-repo/node-app:${{ github.sha }} .
+          docker push us-east-1-docker.pkg.dev/jail-luxury-backend-node-dev/my-repo/node-app:${{ github.sha }}
+
+      # Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy node-app \
+            --image us-east-1-docker.pkg.dev/jail-luxury-backend-node-dev/my-repo/node-app:${{ github.sha }} \
+            --platform managed \
+            --region us-east-1 \
+            --allow-unauthenticated
