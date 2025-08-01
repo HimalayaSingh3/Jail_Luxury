@@ -48,89 +48,97 @@ const BAG_CATEGORIES = [
     title: "DUFFLE",
     subtitle: "BAGS",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid dolor quibusdam cumque.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image8.png",
     imageAlt: "Duffle Bag",
-    imageMaxWidth: "410px",
+    imageMaxWidth: "200vh",
     textAlignment: "left",
     lineJustify: "flex-start",
+    justifyContent: "start",
   },
   {
     title: "SLING",
     subtitle: "BAGS",
     description:
-      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus aspernatur id eum repudiandae obcaecati cum asperiores.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image7.png",
     imageAlt: "Sling Bag",
-    imageMaxWidth: "443px",
+    imageMaxWidth: "200vh",
     textAlignment: "left",
     lineJustify: "flex-end",
+    justifyContent: "end",
   },
   {
     title: "WALLETS",
     subtitle: "",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid dolor quibusdam cumque.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image6.png",
     imageAlt: "Premium wallets",
-    imageMaxWidth: "410px",
+    imageMaxWidth: "200vh",
     textAlignment: "left",
     lineJustify: "flex-start",
+    justifyContent: "start",
   },
   {
     title: "TROLLEY",
     subtitle: "",
     description:
-      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus aspernatur id eum repudiandae obcaecati cum asperiores.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image5.png",
     imageAlt: "Trolley",
-    imageMaxWidth: "443px",
+    imageMaxWidth: "200vh",
     textAlignment: "left",
     lineJustify: "flex-end",
+    justifyContent: "end",
   },
   {
     title: "JACKETS",
     subtitle: "",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid dolor quibusdam cumque.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image4.png",
     imageAlt: "Jackets",
-    imageMaxWidth: "410px",
+    imageMaxWidth: "200vh",
     textAlignment: "left",
     lineJustify: "flex-start",
+    justifyContent: "start",
   },
   {
     title: "GLOVES",
     subtitle: "",
     description:
-      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus aspernatur id eum repudiandae obcaecati cum asperiores.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image3.png",
     imageAlt: "Gloves",
-    imageMaxWidth: "443px",
+    imageMaxWidth: "200vh",
     textAlignment: "left",
     lineJustify: "flex-end",
+    justifyContent: "end",
   },
   {
     title: "SHOES",
     subtitle: "",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid dolor quibusdam cumque.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image2.png",
     imageAlt: "Shoes",
-    imageMaxWidth: "410px",
+    imageMaxWidth: "200vh",
     textAlignment: "left",
     lineJustify: "flex-start",
+    justifyContent: "start",
   },
   {
     title: "BELTS",
     subtitle: "",
     description:
-      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus aspernatur id eum repudiandae obcaecati cum asperiores.",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     image: "/image1.png",
     imageAlt: "Belts",
-    imageMaxWidth: "443px",
+    imageMaxWidth: "200vh",
     textAlignment: "left",
     lineJustify: "flex-end",
+    justifyContent: "end",
   },
 ];
 
@@ -177,72 +185,94 @@ const BagCategorySection = () => {
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Box sx={{ maxWidth: "1400px", margin: "auto", py: 5 }}>
+    <Box sx={{ maxWidth: "100%", margin: "auto", py: 5 }}>
       {BAG_CATEGORIES.map((category, index) => (
-        <Grid container spacing={4} alignItems="center" mb={6} key={index}>
+        <Grid
+          container
+          spacing={0}
+          alignItems="center"
+          mb={6}
+          key={index}
+          sx={{
+            flexDirection: "row",
+            flexWrap: "nowrap",
+            width:"100%"
+          }}
+        >
+          {/* Image Section */}
           <Grid
             item
-            xs={12}
-            md={6}
-            order={{ xs: 1, md: index % 2 === 0 ? 1 : 2 }}
+            xs={6}
+            order={index % 2 === 0 ? 1 : 2}
+            sx={{
+              display: "flex",
+              justifyContent: category.justifyContent || "center",
+            }}
           >
-            <Box display="flex" justifyContent="center">
-              <img
-                src={category.image}
-                alt={category.imageAlt}
-                style={{
-                  width: "100%",
-                  maxWidth: category.imageMaxWidth,
-                  borderRadius: "8px",
-                }}
-              />
-            </Box>
+            <img
+              src={category.image}
+              alt={category.imageAlt}
+              style={{
+                width: "100%",
+                maxWidth: category.imageMaxWidth || "100%",
+              }}
+            />
           </Grid>
-          <Grid
-            item
-            xs={12}
-            md={6}
-            order={{ xs: 2, md: index % 2 === 0 ? 2 : 1 }}
-          >
+
+          {/* Text Section */}
+          <Grid item xs={6} order={index % 2 === 0 ? 2 : 1} 
+           sx={{
+        display: "flex",
+        // background:"red",
+        flexDirection:"column"
+        
+      }}>
             <Typography
-              mx={isTablet ? 2 : 1}
-              variant={isMobile ? "h4" : "h1"}
+              mx={2}
+              variant="h1"
               align="center"
               sx={{
                 fontFamily: "'Playfair Display', serif",
-                fontWeight: "900",
+                fontSize: { xs: "24px", sm: "32px", md: "64px" },
               }}
             >
               {category.title}
-              <br />
+            </Typography>
+
+            {/* Subtitle: hidden on xs */}
+            <Typography
+              mx={2}
+              align="center"
+              sx={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: { xs: "24px", sm: "32px", md: "64px" },
+              }}
+            >
               {category.subtitle}
             </Typography>
 
-            {!isMobile && (
-              <Typography
-                mt={2}
-                mx={1}
-                color="text.secondary"
-                textAlign={category.textAlignment}
-              >
-                {category.description}
-              </Typography>
-            )}
-
-            <Box
-              mt={8}
-              display="flex"
-              justifyContent={isMobile ? "center" : category.lineJustify}
+            <Typography
+              mt={2}
+              mx={2}
+              color="text.secondary"
+              textAlign={category.textAlignment}
+              sx={{
+                display: { xs: "none", sm: "block" },
+                margin: "auto",
+                width: "40%",
+              }}
             >
-              {!isMobile && (
-                <Box
-                  sx={{
-                    width: "78px",
-                    height: "2px",
-                    backgroundColor: "black",
-                  }}
-                />
-              )}
+              {category.description}
+            </Typography>
+
+            <Box mt={4} display="flex" justifyContent={category.lineJustify}>
+              <Box
+                sx={{
+                  width: "78px",
+                  height: "2px",
+                  backgroundColor: "black",
+                }}
+              />
             </Box>
           </Grid>
         </Grid>
@@ -254,9 +284,7 @@ const BagCategorySection = () => {
           alt="Fashion Couple"
           style={{
             width: "100%",
-            maxWidth: "1307px",
-            height: "633px",
-            borderRadius: "1px",
+            maxWidth: "100%",
           }}
         />
       </Box>

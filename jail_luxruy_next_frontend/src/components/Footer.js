@@ -48,8 +48,8 @@ const Footer = () => {
     <FooterContainer>
       <Grid container 
       sx={{ 
-    display: { xs: "flex" }, 
-    flexDirection:{xs:"column"},
+    display: { xs: "flex", md:"flex" }, 
+    flexDirection:{xs:"column", md:"row"},
     justifyContent:{ xs:"start", md:"center"}, 
     mt: 1 
   }}
