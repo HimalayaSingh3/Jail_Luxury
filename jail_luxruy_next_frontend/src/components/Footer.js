@@ -46,7 +46,14 @@ const Footer = () => {
 
   return (
     <FooterContainer>
-      <Grid container justifyContent="center" alignItems="" marginTop={1}>
+      <Grid container 
+      sx={{ 
+    display: { xs: "flex" }, 
+    flexDirection:{xs:"column"},
+    justifyContent:{ xs:"start", md:"center"}, 
+    mt: 1 
+  }}
+      >
         {/* main */}
         <Grid
           item
@@ -96,7 +103,7 @@ const Footer = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+            alignItems: {xs:"start", md:"center"},
             textAlign: "center",
             borderRight: { sm: "1px solid gray" },
             p: { sm: 2 },
@@ -140,7 +147,7 @@ const Footer = () => {
             p: { sm: 2 },
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+             alignItems: {xs:"start", md:"center"},
             textAlign: "center",
             borderRight: { sm: "1px solid gray" },
 
@@ -175,7 +182,7 @@ const Footer = () => {
             p: { sm: 2 },
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+             alignItems: {xs:"start", md:"center"},
             textAlign: "center",
             borderRight: { sm: "1px solid gray" },
 
@@ -225,7 +232,7 @@ const Footer = () => {
             p: { sm: 2 },
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+            alignItems: {xs:"start", md:"center"},
             textAlign: "center",
             borderRight: { sm: "1px solid gray" },
 
