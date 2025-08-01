@@ -1,15 +1,12 @@
+"use client";
+
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { styled } from "@mui/material/styles";
 import {
   AppBar,
   Toolbar,
   IconButton,
-  Menu,
-  MenuItem,
-  Button,
-  Card,
   Drawer,
   Box,
   useMediaQuery,
@@ -19,7 +16,6 @@ import {
   ShoppingCart,
   Favorite,
   Close as CloseIcon,
-  KeyboardArrowDown as ChevronDownIcon,
 } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import { navigationConfig } from "@/app/configs/navigationConfig";
@@ -29,14 +25,13 @@ import ThemeToggle from "./themeToggle";
 import { useTheme } from "@emotion/react";
 import useDebounce from "@/utils/customHooks/useDebounce";
 import { AppContext } from "@/context/applicationContext";
-import CategoryDropdown from "@/components/catogeryComponent/CategoryDropdown"; // Import the CategoryDropdown component
+import CategoryDropdown from "@/components/catogeryComponent/CategoryDropdown";
 import SearchComponent from "./searchComponent";
 
-// ✅ Styled Components
+// Styled Components
 const StyledButton = styled("span")(({ theme }) => ({
   textTransform: "none",
   margin: "1vh",
-  // fontSize: theme.typography.pxToRem(16),
   color: theme.custom.primaryButtonFontColor,
   fontSize: theme.typography.pxToRem(15),
   minWidth: theme.typography.pxToRem(80),
@@ -45,7 +40,6 @@ const StyledButton = styled("span")(({ theme }) => ({
 }));
 
 const StyledIcon = styled("span")(({ theme }) => ({
-  textTransform: "none",
   margin: "1vh",
   color: theme.typography.color,
   fontSize: theme.typography.pxToRem(15),
@@ -98,37 +92,23 @@ export default function Navbar({ carouselImages, userData }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { setCategoryItems, setUser } = useContext(AppContext);
 
+  // 👇 Switch to hamburger when screen is less than "md" breakpoint
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   useEffect(() => {
-    console.log("userData", userData);
     setCategoryItems(carouselImages);
     setUser(userData);
   }, [carouselImages?.length, userData]);
-
-  const useDeviceType = () => {
-    const isTouchDevice = useMediaQuery("(hover: none) and (pointer: coarse)");
-    const isIpadPro = useMediaQuery(
-      "(min-width: 1024px) and (max-width: 1366px) and (orientation: portrait), (min-width: 1366px) and (max-width: 1024px) and (orientation: landscape)"
-    );
-
-    if (isIpadPro) {
-      return "touch";
-    }
-
-    return isTouchDevice ? "touch" : "pc";
-  };
-
-  const deviceType = useDeviceType();
-
-  const toggleMobileNav = () => setMobileOpen((prev) => !prev);
 
   useEffect(() => {
     router.prefetch("/products");
   }, [router]);
 
+  const toggleMobileNav = () => setMobileOpen((prev) => !prev);
+
   const handleSearch = useDebounce((query) => {
     if (query.trim()) {
       const searchPath = `/search?userInput=${encodeURIComponent(query)}`;
-      console.log("Navigating to:", searchPath);
       router.push(searchPath);
     }
   }, 500);
@@ -142,10 +122,10 @@ export default function Navbar({ carouselImages, userData }) {
   const handleSearchSubmit = () => {
     if (searchQuery.trim()) {
       const searchPath = `/search?userInput=${encodeURIComponent(searchQuery)}`;
-      console.log("Navigating to:", searchPath);
       router.push(searchPath);
     }
   };
+
   return (
     <>
       <StyledAppBar position="sticky">
@@ -156,41 +136,19 @@ export default function Navbar({ carouselImages, userData }) {
             position: "relative",
           }}
         >
-          {/* Show mobile menu button for touch devices (including iPad Pro) */}
-          {/* Show mobile menu button for touch devices (including iPad Pro) */}
-          {deviceType === "touch" && (
-            <StyledIcon
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={toggleMobileNav}
-            >
+          {isMobile && (
+            <StyledIcon onClick={toggleMobileNav}>
               <MenuIcon />
             </StyledIcon>
           )}
 
-          {/* Show desktop navigation for non-touch devices */}
-          {deviceType === "pc" && (
+          {!isMobile && (
             <NavLinksContainer>
               <CategoryDropdown />
-              <StyledButton
-                sx={{ textAlign: "center" }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  router.push("/about");
-                }}
-              >
+              <StyledButton onClick={() => router.push("/about")}>
                 About Us
               </StyledButton>
-              <StyledButton
-                sx={{ textAlign: "center" }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  router.push("/contact");
-                }}
-              >
+              <StyledButton onClick={() => router.push("/contact")}>
                 Contact Us
               </StyledButton>
             </NavLinksContainer>
@@ -203,41 +161,28 @@ export default function Navbar({ carouselImages, userData }) {
                   ? "/webps/homePageLogoLight.webp"
                   : "/webps/homePageLogoDark.webp"
               }
-              alt="Jail Logo"
-              priority
+              alt="Logo"
             />
           </HomeLogoWrapper>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1 }}>
-              <StyledIcon
-                color="inherit"
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                aria-label="search"
-              >
+              <StyledIcon onClick={() => setIsSearchOpen(!isSearchOpen)}>
                 {isSearchOpen ? <CloseIcon /> : <SearchIcon />}
               </StyledIcon>
-              {deviceType === "pc" && (
+              {!isMobile && (
                 <>
-                  <StyledIcon
-                    color="inherit"
-                    onClick={() => router.push("/wishlist")}
-                    aria-label="wishlist"
-                  >
+                  <StyledIcon onClick={() => router.push("/wishlist")}>
                     <Favorite />
                   </StyledIcon>
-                  <StyledIcon
-                    color="inherit"
-                    onClick={() => router.push("/cart")}
-                    aria-label="cart"
-                  >
+                  <StyledIcon onClick={() => router.push("/cart")}>
                     <ShoppingCart />
                   </StyledIcon>
                 </>
               )}
             </Box>
 
-            {deviceType === "pc" && (
+            {!isMobile && (
               <>
                 <ProfileBtn
                   text={
@@ -246,12 +191,11 @@ export default function Navbar({ carouselImages, userData }) {
                         {userData.name}
                       </TruncatedText>
                     ) : (
-                      <TruncatedText maxWidth="9vw">{"Profile"}</TruncatedText>
+                      <TruncatedText maxWidth="9vw">Profile</TruncatedText>
                     )
                   }
                   loggedInId={userData?.id}
                 />
-
                 <ThemeToggle />
               </>
             )}
@@ -267,7 +211,7 @@ export default function Navbar({ carouselImages, userData }) {
         )}
       </StyledAppBar>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Hamburger Drawer for Mobile */}
       <MobileNav anchor="left" open={mobileOpen} onClose={toggleMobileNav}>
         <IconButton onClick={toggleMobileNav} sx={{ alignSelf: "flex-end" }}>
           <CloseIcon />
@@ -275,10 +219,9 @@ export default function Navbar({ carouselImages, userData }) {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
             flexDirection: "column",
             gap: 2,
+            alignItems: "flex-start",
           }}
         >
           <CategoryDropdown />
@@ -297,23 +240,13 @@ export default function Navbar({ carouselImages, userData }) {
               )
           )}
           <ThemeToggle />
-          {deviceType === "touch" &&
+          {isMobile &&
             (userData?.id ? (
-              <StyledButton
-                onClick={() => {
-                  toggleMobileNav();
-                  router.push("/userContact");
-                }}
-              >
+              <StyledButton onClick={() => router.push("/userContact")}>
                 Profile
               </StyledButton>
             ) : (
-              <StyledButton
-                onClick={() => {
-                  toggleMobileNav();
-                  router.push("/login-signup");
-                }}
-              >
+              <StyledButton onClick={() => router.push("/login-signup")}>
                 Login / Signup
               </StyledButton>
             ))}
