@@ -9,8 +9,8 @@ const VideoContainer = styled(Box)(({ theme, ismobile }) => ({
   minWidth: ismobile ? "80vw" : "70%",
   minHeight: ismobile? "80vh":"70vh",
   display: "flex",
-  marginLeft: ismobile? "0vw" : "5vw",
-  marginRight: ismobile? "0vw" : "5vw",
+  marginLeft: ismobile? "1vw" : "2vw",
+  marginRight: ismobile? "0.5vw" : "2vw",
   flexDirection: ismobile ? "column" : "row",
   alignItems: "center",
   justifyContent: ismobile ? "center" : "space-evenly",
@@ -42,7 +42,7 @@ const VideoContainer = styled(Box)(({ theme, ismobile }) => ({
 }));
 
 const StyledVideo = styled("video")(({ ismobile }) => ({
-  minWidth: ismobile ? "120vw" : "35vw",
+  minWidth: ismobile ? "140vw" : "35vw",
   maxHeight: ismobile ? "50vh" : "60vh",
   objectFit: "cover",
   borderRadius: "12px",
