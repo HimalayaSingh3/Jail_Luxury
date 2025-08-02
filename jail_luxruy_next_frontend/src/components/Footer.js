@@ -46,14 +46,13 @@ const Footer = () => {
 
   return (
     <FooterContainer>
-      <Grid
-        container
-        sx={{
-          display: { xs: "flex", md: "flex" },
-          flexDirection: { xs: "column", md: "row" }, 
-          justifyContent: { xs: "start", md: "start" }, 
-          mt: 1,
-        }}
+      <Grid container 
+      sx={{ 
+    display: { xs: "flex", md:"flex" }, 
+    flexDirection:{xs:"column", md:"row"},
+    justifyContent:{ xs:"start", md:"center"}, 
+    mt: 1 
+  }}
       >
         {/* main */}
         <Grid
@@ -63,9 +62,9 @@ const Footer = () => {
             flexDirection: "column",
             alignItems: "start",
             textAlign: "center",
-            borderRight: { md: "1px solid black" }, 
-            p: { md: 1 }, 
-            mb: { xs: 2, md: 0 },
+            borderRight: { sm: "1px solid gray" },
+            p: { sm: 2 },
+            mb: { xs: 2, sm: 0 },
           }}
         >
           <img
@@ -73,10 +72,13 @@ const Footer = () => {
             alt="logo"
             style={{
               maxWidth: "200px",
-              background: "black",
-              padding: "3px",
-              borderRadius: "10px",
-              marginBottom: "14px",
+              height: "auto",
+              background: "none",
+              display: "block",
+              marginBottom:"14px",
+              background:"black",
+              padding:"3px",
+              borderRadius:"10px"
             }}
           />
           {[
@@ -86,23 +88,26 @@ const Footer = () => {
             "Mobile: +91-8585858586",
             "Email: support@jail.luxury",
           ].map((line, index) => (
-            <Typography key={index} variant="body2">
+            <Typography
+              key={index}
+              variant="body2"
+              color={theme.custom.primaryButtonFontColor}
+            >
               {line}
             </Typography>
           ))}
         </Grid>
-
         {/* HELP */}
         <Grid
           item
           sx={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "start",
+            alignItems: {xs:"start", md:"center"},
             textAlign: "center",
-            borderRight: { md: "1px solid gray" },
-            p: { md: 1 },
-            mb: { xs: 2, md: 0 },
+            borderRight: { sm: "1px solid gray" },
+            p: { sm: 2 },
+            mb: { xs: 2, sm: 0 },
           }}
         >
           <Button
@@ -110,7 +115,7 @@ const Footer = () => {
               borderRadius: "11px",
               cursor: "default",
               fontWeight: "bolder",
-              mb: "14px",
+              marginBottom: "14px",
               fontSize: "18px",
               bgcolor: "white",
               color: "black",
@@ -139,13 +144,14 @@ const Footer = () => {
         <Grid
           item
           sx={{
+            p: { sm: 2 },
             display: "flex",
             flexDirection: "column",
-            alignItems: "start",
+             alignItems: {xs:"start", md:"center"},
             textAlign: "center",
-            borderRight: { md: "1px solid gray" },
-            p: { md: 1 },
-            mb: { xs: 2, md: 0 },
+            borderRight: { sm: "1px solid gray" },
+
+            mb: { xs: 2, sm: 0 },
           }}
         >
           <Button
@@ -153,7 +159,7 @@ const Footer = () => {
               borderRadius: "11px",
               cursor: "default",
               fontWeight: "bolder",
-              mb: "14px",
+              marginBottom: "14px",
               fontSize: "18px",
               bgcolor: "white",
               color: "black",
@@ -173,13 +179,14 @@ const Footer = () => {
         <Grid
           item
           sx={{
+            p: { sm: 2 },
             display: "flex",
             flexDirection: "column",
-            alignItems: "start",
+             alignItems: {xs:"start", md:"center"},
             textAlign: "center",
-            borderRight: { md: "1px solid gray" },
-            p: { md: 1 },
-            mb: { xs: 2, md: 0 },
+            borderRight: { sm: "1px solid gray" },
+
+            mb: { xs: 2, sm: 0 },
           }}
         >
           <Button
@@ -187,7 +194,7 @@ const Footer = () => {
               borderRadius: "11px",
               cursor: "default",
               fontWeight: "bolder",
-              mb: "14px",
+              marginBottom: "14px",
               fontSize: "18px",
               bgcolor: "white",
               color: "black",
@@ -208,7 +215,9 @@ const Footer = () => {
             <FooterLink
               key={item}
               onClick={() =>
-                handleNavigation(`/products/${item.toLowerCase().replace(/ /g, "_")}`)
+                handleNavigation(
+                  `/products/${item.toLowerCase().replace(/ /g, "_")}`
+                )
               }
             >
               {item}
@@ -220,13 +229,14 @@ const Footer = () => {
         <Grid
           item
           sx={{
+            p: { sm: 2 },
             display: "flex",
             flexDirection: "column",
-            alignItems: "start",
+            alignItems: {xs:"start", md:"center"},
             textAlign: "center",
-            borderRight: { md: "1px solid gray" },
-            p: { md: 1 },
-            mb: { xs: 2, md: 0 },
+            borderRight: { sm: "1px solid gray" },
+
+            mb: { xs: 2, sm: 0 },
           }}
         >
           <Button
@@ -234,7 +244,7 @@ const Footer = () => {
               borderRadius: "11px",
               cursor: "default",
               fontWeight: "bolder",
-              mb: "14px",
+              marginBottom: "14px",
               fontSize: "18px",
               bgcolor: "white",
               color: "black",
@@ -242,22 +252,43 @@ const Footer = () => {
           >
             SOCIAL MEDIA
           </Button>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <SocialIcons onClick={() => handleNavigation("https://www.facebook.com/jail.luxury")}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <SocialIcons
+              onClick={() =>
+                handleNavigation("https://www.facebook.com/jail.luxury")
+              }
+            >
               <FacebookIcon style={{ color: "#1877F2" }} />
             </SocialIcons>
-            <SocialIcons onClick={() => handleNavigation("https://www.instagram.com/jail.luxury")}>
+            <SocialIcons
+              onClick={() =>
+                handleNavigation("https://www.instagram.com/jail.luxury")
+              }
+            >
               <InstagramIcon style={{ color: "#E4405F" }} />
             </SocialIcons>
-            <SocialIcons onClick={() => handleNavigation("https://x.com/jailluxury")}>
+            <SocialIcons
+              onClick={() => handleNavigation("https://x.com/jailluxury")}
+            >
               <TwitterIcon style={{ color: "#1DA1F2" }} />
             </SocialIcons>
             <SocialIcons
-              onClick={() => handleNavigation("https://www.linkedin.com/company/jail-luxury/")}
+              onClick={() =>
+                handleNavigation(
+                  "https://www.linkedin.com/company/jail-luxury/"
+                )
+              }
             >
               <LinkedInIcon style={{ color: "#0A66C2" }} />
             </SocialIcons>
-            <SocialIcons onClick={() => handleNavigation("https://pin.it/35X2dFOen")}>
+            <SocialIcons
+              onClick={() => handleNavigation("https://pin.it/35X2dFOen")}
+            >
               <PinterestIcon style={{ color: "#BD081C" }} />
             </SocialIcons>
           </Box>
@@ -267,12 +298,12 @@ const Footer = () => {
         <Grid
           item
           sx={{
+            p: { sm: 2 },
             display: "flex",
             flexDirection: "column",
             alignItems: "start",
             textAlign: "center",
-            p: { md: 1 },
-            mb: { xs: 2, md: 0 },
+            mb: { xs: 2, sm: 0 },
           }}
         >
           <Button
@@ -280,7 +311,7 @@ const Footer = () => {
               borderRadius: "11px",
               cursor: "default",
               fontWeight: "bolder",
-              mb: "14px",
+              marginBottom: "14px",
               fontSize: "18px",
               bgcolor: "white",
               color: "black",
@@ -291,11 +322,15 @@ const Footer = () => {
           {[
             "3633 Prabhash Complex",
             "Mukundopur Bhagwanpur – 24",
-            "South Pargana",
+            " South Pargana",
             "Kolkata 700150",
             "India",
           ].map((line, index) => (
-            <Typography key={index} variant="body2">
+            <Typography
+              key={index}
+              variant="body2"
+              color={theme.custom.primaryButtonFontColor}
+            >
               {line}
             </Typography>
           ))}
