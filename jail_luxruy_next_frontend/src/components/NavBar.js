@@ -204,9 +204,9 @@ export default function Navbar({ carouselImages, userData }) {
                     sx={{ color: "#000" }}
                     onClick={() => {
                       if (userData?.id) {
-                        router.push("/auth/google"); 
+                        // router.push("/login-signup"); 
                       } else {
-                        router.push("/login-signup"); 
+                        console.log(error)
                       }
                     }}
                   >
