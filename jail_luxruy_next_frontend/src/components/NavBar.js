@@ -18,200 +18,239 @@ import {
   Close as CloseIcon,
 } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
-import { navigationConfig } from "@/app/configs/navigationConfig";
 import ProfileBtn from "./buttons/profileBtn";
-import TruncatedText from "./wrappers/TruncatedText";
 import ThemeToggle from "./themeToggle";
 import { useTheme } from "@emotion/react";
-import useDebounce from "@/utils/customHooks/useDebounce";
 import { AppContext } from "@/context/applicationContext";
-import CategoryDropdown from "@/components/catogeryComponent/CategoryDropdown";
 import SearchComponent from "./searchComponent";
 
-// Styled Components
-const StyledButton = styled("span")(({ theme }) => ({
-  textTransform: "none",
-  margin: "1vh",
-  color: theme.custom.primaryButtonFontColor,
-  fontSize: theme.typography.pxToRem(15),
-  minWidth: theme.typography.pxToRem(80),
-  maxWidth: theme.typography.pxToRem(300),
-  cursor: "pointer",
+const navItems = ["Clothing", "Travel", "Bag", "Purse", "Men", "Women"];
+
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  backgroundColor: "#fff",
+  boxShadow: "none",
+  borderBottom: `1px solid ${theme.palette.divider}`,
 }));
 
-const StyledIcon = styled("span")(({ theme }) => ({
-  margin: "1vh",
-  color: theme.typography.color,
-  fontSize: theme.typography.pxToRem(15),
-  maxWidth: theme.typography.pxToRem(50),
+const NavItem = styled("span")(({ theme }) => ({
   cursor: "pointer",
+  fontSize: theme.typography.pxToRem(15),
+  fontWeight: 600,
+  color: "#000",
+  textTransform: "capitalize",
 }));
 
-const HomeLogoWrapper = styled("div")(({ theme }) => ({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  position: "absolute",
-  left: "50%",
-  transform: "translateX(-50%)",
-  cursor: "pointer",
-  "& img": {
-    maxWidth: theme.typography.pxToRem(250),
-    maxHeight: theme.typography.pxToRem(35),
-    [theme.breakpoints.down("md")]: {
-      maxWidth: theme.typography.pxToRem(200),
-      maxHeight: theme.typography.pxToRem(30),
-    },
-  },
+const SubText = styled("div")(({ theme }) => ({
+  fontSize: theme.typography.pxToRem(14),
+  textAlign: "center",
+  color: "#000",
+  marginTop: 24,
+  fontWeight: "600",
 }));
 
 const MobileNav = styled(Drawer)(({ theme }) => ({
   "& .MuiDrawer-paper": {
-    width: theme.typography.pxToRem(300),
+    width: 280,
     padding: theme.spacing(2),
   },
-}));
-
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: theme.palette.navbac.main,
-  borderBottom: 1,
-  borderColor: "divider",
-}));
-
-const NavLinksContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
-  gap: 2,
-  alignItems: "center",
 }));
 
 export default function Navbar({ carouselImages, userData }) {
   const theme = useTheme();
   const router = useRouter();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const { setCategoryItems, setUser } = useContext(AppContext);
 
-  // 👇 Switch to hamburger when screen is less than "md" breakpoint
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { setCategoryItems, setUser } = useContext(AppContext);
 
   useEffect(() => {
     setCategoryItems(carouselImages);
     setUser(userData);
   }, [carouselImages?.length, userData]);
 
-  useEffect(() => {
-    router.prefetch("/products");
-  }, [router]);
-
   const toggleMobileNav = () => setMobileOpen((prev) => !prev);
 
-  const handleSearch = useDebounce((query) => {
-    if (query.trim()) {
-      const searchPath = `/search?userInput=${encodeURIComponent(query)}`;
-      router.push(searchPath);
-    }
-  }, 500);
-
-  const handleSearchChange = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    handleSearch(query);
-  };
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
   const handleSearchSubmit = () => {
     if (searchQuery.trim()) {
-      const searchPath = `/search?userInput=${encodeURIComponent(searchQuery)}`;
-      router.push(searchPath);
+      router.push(
+        `/search?userInput=${encodeURIComponent(searchQuery.trim())}`
+      );
+      setIsSearchOpen(false);
     }
   };
 
   return (
     <>
-      <StyledAppBar position="sticky">
+      <StyledAppBar position="static">
         <Toolbar
           sx={{
+            position: "relative",
             display: "flex",
             justifyContent: "space-between",
-            position: "relative",
+            alignItems: "flex-start",
+            minHeight: 64,
+            px: 1,
+            pt: 1,
           }}
         >
-          {isMobile && (
-            <StyledIcon onClick={toggleMobileNav}>
-              <MenuIcon />
-            </StyledIcon>
-          )}
+          {isMobile ? (
+            <>
+              {/* Mobile: Left */}
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                <IconButton onClick={toggleMobileNav} sx={{color:"#000"}}>
+                  <MenuIcon />
+                </IconButton>
+                <IconButton onClick={() => setIsSearchOpen(!isSearchOpen)} sx={{color:"#000"}}>
+                  {isSearchOpen ? <CloseIcon /> : <SearchIcon />}
+                </IconButton>
+              </Box>
 
-          {!isMobile && (
-            <NavLinksContainer>
-              <CategoryDropdown />
-              <StyledButton onClick={() => router.push("/about")}>
-                About Us
-              </StyledButton>
-              <StyledButton onClick={() => router.push("/contact")}>
-                Contact Us
-              </StyledButton>
-            </NavLinksContainer>
-          )}
-
-          <HomeLogoWrapper onClick={() => router.push("/")}>
-            <img
-              src={
-                theme.palette.mode === "light"
-                  ? "/webps/homePageLogoLight.webp"
-                  : "/webps/homePageLogoDark.webp"
-              }
-              alt="Logo"
-            />
-          </HomeLogoWrapper>
-
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1 }}>
-              <StyledIcon onClick={() => setIsSearchOpen(!isSearchOpen)}>
-                {isSearchOpen ? <CloseIcon /> : <SearchIcon />}
-              </StyledIcon>
-              {!isMobile && (
-                <>
-                  <StyledIcon onClick={() => router.push("/wishlist")}>
-                    <Favorite />
-                  </StyledIcon>
-                  <StyledIcon onClick={() => router.push("/cart")}>
-                    <ShoppingCart />
-                  </StyledIcon>
-                </>
-              )}
-            </Box>
-
-            {!isMobile && (
-              <>
-                <ProfileBtn
-                  text={
-                    userData?.name ? (
-                      <TruncatedText maxWidth="9vw">
-                        {userData.name}
-                      </TruncatedText>
-                    ) : (
-                      <TruncatedText maxWidth="9vw">Profile</TruncatedText>
-                    )
-                  }
-                  loggedInId={userData?.id}
+              {/* Mobile: Center Logo */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  mt:0.5,
+          
+                }}
+                onClick={() => router.push("/")}
+              >
+                <img
+                  src="/webps/homePageLogoLight.webp"
+                  alt="Logo"
+                  style={{ height: 32 }}
                 />
-                <ThemeToggle />
-              </>
-            )}
-          </Box>
-        </Toolbar>
+              </Box>
 
-        {isSearchOpen && (
-          <SearchComponent
-            searchQuery={searchQuery}
-            handleSearchChange={handleSearchChange}
-            handleSearchSubmit={handleSearchSubmit}
-          />
-        )}
+              {/* Mobile: Right */}
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                <IconButton>
+                  <ProfileBtn text="" loggedInId={userData?.id} />
+                </IconButton>
+                <IconButton onClick={() => router.push("/cart")} sx={{color:"#000"}}>
+                  <ShoppingCart />
+                </IconButton>
+              </Box>
+            </>
+          ) : (
+            <>
+              {/* Desktop: Left Logo */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  cursor: "pointer",
+                  marginTop: 2,
+                }}
+                onClick={() => router.push("/")}
+              >
+                <img
+                  src="/webps/homePageLogoLight.webp"
+                  alt="Logo"
+                  style={{ height: 32 }}
+                />
+              </Box>
+
+              {/* Desktop: Center Nav Items */}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Box sx={{ display: "flex", gap: 4 }}>
+                  {navItems.map((item, i) => (
+                    <NavItem key={i}>{item}</NavItem>
+                  ))}
+                </Box>
+                <SubText>Get discount on sling bags</SubText>
+              </Box>
+
+              {/* Desktop: Right Side with "About us" on top */}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                }}
+              >
+                {/* About us on top right */}
+                <Box
+                  sx={{
+                    mb: 1,
+                    mx: 1,
+                    cursor: "pointer",
+                    display: { xs: "none", md: "block" },
+                  }}
+                  onClick={() => router.push("/about")}
+                >
+                  <NavItem>About us</NavItem>
+                </Box>
+
+                {/* Icon buttons below */}
+                <Box sx={{ display: "flex", gap: 2 }}>
+                  <IconButton
+                    sx={{ color: "#000" }}
+                    onClick={() => {
+                      if (userData?.id) {
+                        router.push("/auth/google"); 
+                      } else {
+                        router.push("/login-signup"); 
+                      }
+                    }}
+                  >
+                    <ProfileBtn
+                      text={userData?.id ? "Profile" : "Login / Signup"}
+                      loggedInId={userData?.id}
+                    />
+                  </IconButton>
+
+                  <IconButton
+                    onClick={() => setIsSearchOpen(!isSearchOpen)}
+                    sx={{ color: "#000" }}
+                  >
+                    {isSearchOpen ? <CloseIcon /> : <SearchIcon />}
+                  </IconButton>
+                  <IconButton
+                    onClick={() => router.push("/wishlist")}
+                    sx={{ color: "#000" }}
+                  >
+                    <Favorite />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => router.push("/cart")}
+                    sx={{ color: "#000" }}
+                  >
+                    <ShoppingCart />
+                  </IconButton>
+                </Box>
+              </Box>
+            </>
+          )}
+        </Toolbar>
       </StyledAppBar>
 
-      {/* Hamburger Drawer for Mobile */}
+      {/* Search Bar */}
+      {isSearchOpen && (
+        <SearchComponent
+          searchQuery={searchQuery}
+          handleSearchChange={handleSearchChange}
+          handleSearchSubmit={handleSearchSubmit}
+        />
+      )}
+
+      {/* Mobile Drawer */}
       <MobileNav anchor="left" open={mobileOpen} onClose={toggleMobileNav}>
         <IconButton onClick={toggleMobileNav} sx={{ alignSelf: "flex-end" }}>
           <CloseIcon />
@@ -222,34 +261,18 @@ export default function Navbar({ carouselImages, userData }) {
             flexDirection: "column",
             gap: 2,
             alignItems: "flex-start",
+            mt: 2,
           }}
         >
-          <CategoryDropdown />
-          {navigationConfig.map(
-            (item) =>
-              item?.render === true && (
-                <StyledButton
-                  key={item.path}
-                  onClick={() => {
-                    toggleMobileNav();
-                    router.push(item.path);
-                  }}
-                >
-                  {item.text}
-                </StyledButton>
-              )
-          )}
+          {navItems.map((item) => (
+            <NavItem key={item}>{item}</NavItem>
+          ))}
+          <NavItem onClick={() => router.push("/about")}>About us</NavItem>
           <ThemeToggle />
-          {isMobile &&
-            (userData?.id ? (
-              <StyledButton onClick={() => router.push("/userContact")}>
-                Profile
-              </StyledButton>
-            ) : (
-              <StyledButton onClick={() => router.push("/login-signup")}>
-                Login / Signup
-              </StyledButton>
-            ))}
+          <ProfileBtn
+            text={userData?.id ? "Profile" : "Login / Signup"}
+            loggedInId={userData?.id}
+          />
         </Box>
       </MobileNav>
     </>
