@@ -21,7 +21,7 @@ const StyledButton = styled("button")(({ theme }) => ({
   color: theme.palette.text.primary, // Use theme text color
   textDecoration: "none",
   fontWeight: 600,
-  fontSize: theme.typography.pxToRem(20),
+  fontSize: theme.typography.pxToRem(16),
   fontFamily:"Abyssinica SIL",
   backgroundColor: "transparent",
   cursor: "pointer",

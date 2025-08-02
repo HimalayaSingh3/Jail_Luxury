@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { styled } from "@mui/material/styles";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import {
   AppBar,
   Toolbar,
@@ -35,7 +36,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 const NavItem = styled("span")(({ theme }) => ({
   cursor: "pointer",
   fontSize: theme.typography.pxToRem(15),
-  fontWeight: 600,
+  // fontWeight: 600,
   color: "#000",
   textTransform: "capitalize",
 }));
@@ -45,7 +46,7 @@ const SubText = styled("div")(({ theme }) => ({
   textAlign: "center",
   color: "#000",
   marginTop: 24,
-  fontWeight: "600",
+  // fontWeight: "600",
 }));
 
 const MobileNav = styled(Drawer)(({ theme }) => ({
@@ -102,10 +103,13 @@ export default function Navbar({ carouselImages, userData }) {
             <>
               {/* Mobile: Left */}
               <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                <IconButton onClick={toggleMobileNav} sx={{color:"#000"}}>
+                <IconButton onClick={toggleMobileNav} sx={{ color: "#000" }}>
                   <MenuIcon />
                 </IconButton>
-                <IconButton onClick={() => setIsSearchOpen(!isSearchOpen)} sx={{color:"#000"}}>
+                <IconButton
+                  onClick={() => setIsSearchOpen(!isSearchOpen)}
+                  sx={{ color: "#000" }}
+                >
                   {isSearchOpen ? <CloseIcon /> : <SearchIcon />}
                 </IconButton>
               </Box>
@@ -119,8 +123,7 @@ export default function Navbar({ carouselImages, userData }) {
                   display: "flex",
                   alignItems: "center",
                   cursor: "pointer",
-                  mt:0.5,
-          
+                  mt: 0.5,
                 }}
                 onClick={() => router.push("/")}
               >
@@ -133,10 +136,26 @@ export default function Navbar({ carouselImages, userData }) {
 
               {/* Mobile: Right */}
               <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                <IconButton>
-                  <ProfileBtn text="" loggedInId={userData?.id} />
-                </IconButton>
-                <IconButton onClick={() => router.push("/cart")} sx={{color:"#000"}}>
+                {/* <IconButton>
+                  {userData?.id ? (
+                      <ProfileBtn
+                        text={<a>{userData?.name}</a>}
+                        loggedInId={userData?.id}
+                    
+                      />
+                    ) : (
+                      <a href="/login-signup" style={{
+                        display:"flex",
+                        alignItems:"center"
+                      }}>
+                        <PersonOutlineOutlinedIcon style={{ color: "black" }} />
+                      </a>
+                    )}
+                </IconButton> */}
+                <IconButton
+                  onClick={() => router.push("/cart")}
+                  sx={{ color: "#000" }}
+                >
                   <ShoppingCart />
                 </IconButton>
               </Box>
@@ -199,21 +218,31 @@ export default function Navbar({ carouselImages, userData }) {
                 </Box>
 
                 {/* Icon buttons below */}
-                <Box sx={{ display: "flex", gap: 2 }}>
+                <Box sx={{ display: "flex", }}>
                   <IconButton
                     sx={{ color: "#000" }}
-                    onClick={() => {
-                      if (userData?.id) {
-                        // router.push("/login-signup"); 
-                      } else {
-                        console.log(error)
-                      }
-                    }}
+                    // onClick={() => {
+                    //   if (userData?.id) {
+                    //     // router.push("/login-signup");
+                    //   } else {
+                    //     console.log(error);
+                    //   }
+                    // }}
                   >
-                    <ProfileBtn
-                      text={userData?.id ? "Profile" : "Login / Signup"}
-                      loggedInId={userData?.id}
-                    />
+                    {userData?.id ? (
+                      <ProfileBtn
+                        text={<a>{userData?.name}</a>}
+                        loggedInId={userData?.id}
+                    
+                      />
+                    ) : (
+                      <a href="/login-signup" style={{
+                        display:"flex",
+                        alignItems:"center"
+                      }}>
+                        <PersonOutlineOutlinedIcon style={{ color: "black" }} />
+                      </a>
+                    )}
                   </IconButton>
 
                   <IconButton
@@ -269,10 +298,20 @@ export default function Navbar({ carouselImages, userData }) {
           ))}
           <NavItem onClick={() => router.push("/about")}>About us</NavItem>
           <ThemeToggle />
-          <ProfileBtn
-            text={userData?.id ? "Profile" : "Login / Signup"}
-            loggedInId={userData?.id}
-          />
+          {userData?.id ? (
+                      <ProfileBtn
+                        text={<a>{userData?.name}</a>}
+                        loggedInId={userData?.id}
+                    
+                      />
+                    ) : (
+                      <a href="/login-signup" style={{
+                        display:"flex",
+                        alignItems:"center"
+                      }}>
+                        <PersonOutlineOutlinedIcon style={{ color: "black" }} />
+                      </a>
+                    )}
         </Box>
       </MobileNav>
     </>
