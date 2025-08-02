@@ -136,7 +136,7 @@ export default function Navbar({ carouselImages, userData }) {
 
               {/* Mobile: Right */}
               <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                {/* <IconButton>
+                 <IconButton>
                   {userData?.id ? (
                       <ProfileBtn
                         text={<a>{userData?.name}</a>}
@@ -151,7 +151,7 @@ export default function Navbar({ carouselImages, userData }) {
                         <PersonOutlineOutlinedIcon style={{ color: "black" }} />
                       </a>
                     )}
-                </IconButton> */}
+                </IconButton> 
                 <IconButton
                   onClick={() => router.push("/cart")}
                   sx={{ color: "#000" }}
@@ -298,20 +298,7 @@ export default function Navbar({ carouselImages, userData }) {
           ))}
           <NavItem onClick={() => router.push("/about")}>About us</NavItem>
           <ThemeToggle />
-          {userData?.id ? (
-                      <ProfileBtn
-                        text={<a>{userData?.name}</a>}
-                        loggedInId={userData?.id}
-                    
-                      />
-                    ) : (
-                      <a href="/login-signup" style={{
-                        display:"flex",
-                        alignItems:"center"
-                      }}>
-                        <PersonOutlineOutlinedIcon style={{ color: "black" }} />
-                      </a>
-                    )}
+          
         </Box>
       </MobileNav>
     </>
