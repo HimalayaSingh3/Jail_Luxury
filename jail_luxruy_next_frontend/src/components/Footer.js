@@ -50,8 +50,8 @@ const Footer = () => {
         container
         sx={{
           display: { xs: "flex", md: "flex" },
-          flexDirection: { xs: "column", md: "row" }, // Keep column for mobile/tab, row for web
-          justifyContent: { xs: "start", md: "start" }, // Ensure alignment starts on left for all
+          flexDirection: { xs: "column", md: "row" }, 
+          justifyContent: { xs: "start", md: "start" }, 
           mt: 1,
         }}
       >
@@ -63,8 +63,8 @@ const Footer = () => {
             flexDirection: "column",
             alignItems: "start",
             textAlign: "center",
-            borderRight: { md: "1px solid black" }, // Divider only on web
-            p: { md: 1 }, // Reduced padding for web
+            borderRight: { md: "1px solid black" }, 
+            p: { md: 1 }, 
             mb: { xs: 2, md: 0 },
           }}
         >
