@@ -3,6 +3,7 @@
 import React from "react";
 import {
   Box,
+  Button,
   List,
   ListItemButton,
   ListItemIcon,
@@ -16,12 +17,14 @@ import AnalyticsIcon from "@mui/icons-material/Analytics";
 import ArticleIcon from "@mui/icons-material/Article";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import { usePathname, useRouter } from "next/navigation";
+import ProfileBtn from "@/components/buttons/profileBtn";
 
 const menuItems = [
   { text: "Dashboard", icon: <DashboardIcon />, path: "/admin/dashboard" },
   { text: "Users", icon: <GroupIcon />, path: "/admin/users" },
   { text: "Orders", icon: <Inventory2Icon />, path: "/admin/orders" },
-  { text: "Products", icon: <CategoryIcon />, path: "/admin/products" },
+  { text: "Add Products", icon: <CategoryIcon />, path: "/admin/products" },
+  { text: "All Products", icon: <CategoryIcon />, path: "/admin/AllProducts " },
   { text: "Analysis", icon: <AnalyticsIcon />, path: "/admin/analysis" },
   { text: "Blogs", icon: <ArticleIcon />, path: "/admin/blogs" },
   { text: "Tickets", icon: <ConfirmationNumberIcon />, path: "/admin/tickets" },
@@ -41,6 +44,21 @@ const Sidebar = () => {
         py: 2,
       }}
     >
+      <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+        <Button
+          sx={{
+            background: "blue",
+            color: "white",
+            px: 4, 
+            "&:hover": {
+              background: "#0033cc", 
+            },
+          }}
+        >
+          Profile
+        </Button>
+      </Box>
+
       <List>
         {menuItems.map((item) => {
           const isActive = pathname === item.path;
