@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { usePathname } from "next/navigation";
 import { ErrorBoundary } from "../ErrorBoundary";
 import { ThemeProviderWrapper, useThemeContext } from "@/context/themeContext";
 import Footer from "../Footer";
@@ -9,7 +10,7 @@ import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import { AppContextProvider } from "@/context/applicationContext";
 
 function ThemeBackgroundWrapper({ children }) {
-  const { themeMode } = useThemeContext(); // Get current theme dynamically
+  const { themeMode } = useThemeContext();
 
   return (
     <div
@@ -17,7 +18,6 @@ function ThemeBackgroundWrapper({ children }) {
         backgroundColor: themeMode === "dark" ? "#121212" : "#ffffff",
         minHeight: "100vh",
         minWidth: "100vw",
-
         transition: "background-color 0.3s ease-in-out",
       }}
     >
@@ -26,7 +26,10 @@ function ThemeBackgroundWrapper({ children }) {
   );
 }
 
-function LayoutClientPage({ children ,carouselImages,userData}) {
+function LayoutClientPage({ children, carouselImages, userData }) {
+  const pathname = usePathname();
+  const isAdminRoute = pathname.startsWith("/admin");
+
   return (
     <ErrorBoundary>
       <html lang="en">
@@ -34,12 +37,12 @@ function LayoutClientPage({ children ,carouselImages,userData}) {
           <ThemeProviderWrapper>
             <CssBaseline />
             <ThemeBackgroundWrapper>
-              {" "}
-              {/* Apply background color here */}{" "}
               <AppContextProvider>
-                <Navbar carouselImages={carouselImages.data} userData={userData}/>
+                {!isAdminRoute && (
+                  <Navbar carouselImages={carouselImages?.data} userData={userData} />
+                )}
                 {children}
-                <Footer />
+                {!isAdminRoute && <Footer />}
               </AppContextProvider>
             </ThemeBackgroundWrapper>
           </ThemeProviderWrapper>
