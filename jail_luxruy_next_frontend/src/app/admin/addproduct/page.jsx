@@ -51,9 +51,23 @@ export default function AddNewProduct() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  // New state for selected colors
+  const [selectedColors, setSelectedColors] = useState([]);
 
   // Consume categoryItems from AppContext
   const { categoryItems } = useContext(AppContext);
+
+  // Define a list of available colors for selection
+  const availableColors = [
+    { name: 'Red', hex: '#EF4444' },
+    { name: 'Blue', hex: '#3B82F6' },
+    { name: 'Green', hex: '#22C55E' },
+    { name: 'Black', hex: '#1F2937' },
+    { name: 'White', hex: '#F9FAFB' },
+    { name: 'Yellow', hex: '#EAB308' },
+    { name: 'Purple', hex: '#A855F7' },
+    { name: 'Orange', hex: '#F97316' },
+  ];
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -70,6 +84,14 @@ export default function AddNewProduct() {
     }
   };
 
+  const handleColorToggle = (colorHex) => {
+    setSelectedColors((prevColors) =>
+      prevColors.includes(colorHex)
+        ? prevColors.filter((c) => c !== colorHex)
+        : [...prevColors, colorHex]
+    );
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Here you would typically send the form data to your backend API
@@ -79,12 +101,21 @@ export default function AddNewProduct() {
       price,
       stock,
       category,
+      selectedColors, // Include selected colors in the submission
       imageFile: imageFile ? imageFile.name : null,
     });
     setSnackbarMessage('Product added successfully!');
     setSnackbarSeverity('success');
     setSnackbarOpen(true);
-    
+    // Optionally reset form fields after successful submission
+    // setProductName('');
+    // setDescription('');
+    // setPrice('');
+    // setStock('');
+    // setCategory('');
+    // setSelectedColors([]);
+    // setImageFile(null);
+    // setImagePreview(null);
   };
 
   const handleCancel = () => {
@@ -97,6 +128,7 @@ export default function AddNewProduct() {
     // setPrice('');
     // setStock('');
     // setCategory('');
+    // setSelectedColors([]);
     // setImageFile(null);
     // setImagePreview(null);
   };
@@ -164,6 +196,48 @@ export default function AddNewProduct() {
                   ))}
                 </Select>
               </FormControl>
+            </Grid>
+            {/* New Grid item for Color Selection */}
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" gutterBottom sx={{ color: '#555', mb: 1 }}>
+                Available Colors
+              </Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+                {availableColors.map((color) => (
+                  <Box
+                    key={color.hex}
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: '50%', // Make it a circle
+                      backgroundColor: color.hex,
+                      border: selectedColors.includes(color.hex) ? '3px solid #3B82F6' : '1px solid #E0E0E0', // Highlight selected
+                      boxShadow: selectedColors.includes(color.hex) ? '0 0 0 2px rgba(59, 130, 246, 0.5)' : 'none',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease-in-out',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      '&:hover': {
+                        transform: 'scale(1.1)',
+                        boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.3)',
+                      },
+                    }}
+                    onClick={() => handleColorToggle(color.hex)}
+                  >
+                    {selectedColors.includes(color.hex) && (
+                      <Typography variant="caption" sx={{ color: color.hex === '#1F2937' || color.hex === '#3B82F6' || color.hex === '#A855F7' ? 'white' : 'black', fontSize: '0.7rem' }}>
+                        &#10003; {/* Checkmark */}
+                      </Typography>
+                    )}
+                  </Box>
+                ))}
+              </Box>
+              {selectedColors.length > 0 && (
+                <FormHelperText sx={{ mt: 1, color: '#666' }}>
+                  Selected Colors: {selectedColors.map(hex => availableColors.find(c => c.hex === hex)?.name || hex).join(', ')}
+                </FormHelperText>
+              )}
             </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom sx={{ color: '#555', mb: 1 }}>
