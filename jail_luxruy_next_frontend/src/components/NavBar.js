@@ -4,6 +4,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { styled } from "@mui/material/styles";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+
 import {
   AppBar,
   Toolbar,
@@ -85,6 +86,12 @@ export default function Navbar({ carouselImages, userData }) {
     }
   };
 
+
+  const handleClick = () => {
+    // Perform any check here if needed
+    router.push('/auth/login');
+  };
+
   return (
     <>
       <StyledAppBar position="static">
@@ -144,7 +151,7 @@ export default function Navbar({ carouselImages, userData }) {
                     
                       />
                     ) : (
-                      <a href="/login-signup" style={{
+                      <a onClick={handleClick} style={{
                         display:"flex",
                         alignItems:"center"
                       }}>
@@ -236,7 +243,7 @@ export default function Navbar({ carouselImages, userData }) {
                     
                       />
                     ) : (
-                      <a href="/login-signup" style={{
+                      <a onClick={handleClick} style={{
                         display:"flex",
                         alignItems:"center"
                       }}>

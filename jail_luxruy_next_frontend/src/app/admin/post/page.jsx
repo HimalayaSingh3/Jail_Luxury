@@ -1,176 +1,340 @@
-"use client";
-import React, { useState } from "react";
+"use client"
+import React, { useState, useEffect } from 'react';
 import {
+  Container,
   Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Container, // Container is not used in the final structure, but kept in imports
-  Grid,
   Typography,
-  Paper,
-  Snackbar,
-  Alert,
-  IconButton,
-  Badge,
+  Button,
   TextField,
-} from "@mui/material";
-import Link from "next/link";
-import NotificationsIcon from '@mui/icons-material/Notifications';
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  Paper,
+  ListItemAvatar,
+  Avatar,
+} from '@mui/material';
+import { ChevronLeft, ChevronRight, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 
-const uploadedImages = [
-  { id: 1, url: "https://placehold.co/400x250/A78BFA/ffffff?text=Image+1", title: "Product Image 1" },
-  { id: 2, url: "", title: "Product Image 2" },
-  { id: 3, url: "", title: "Product Image 3" },
-  { id: 4, url: "", title: "Product Image 4" },
-  { id: 5, url: "", title: "Product Image 5" },
+const adPostsData = [
+  {
+    id: 1,
+    imageUrl: 'https://images.unsplash.com/photo-1620799140403-edc87623d38f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    redirectUrl: 'https://unsplash.com/photos/a-young-man-with-a-white-shirt-is-waving-his-hand-eR3j195uN6I',
+  },
+  {
+    id: 2,
+    imageUrl: 'https://images.unsplash.com/photo-1596767512808-726d40d9d068?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    redirectUrl: 'https://unsplash.com/photos/a-man-is-standing-in-a-field-of-wheat-t9N1YQ5-U78',
+  },
+  {
+    id: 3,
+    imageUrl: 'https://images.unsplash.com/photo-1549465220-1a7378d382e7?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    redirectUrl: 'https://unsplash.com/photos/a-woman-in-a-white-dress-is-holding-a-bouquet-of-flowers-L1K-lETrjHw',
+  },
 ];
 
-export default function AdminView() {
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-  const [notificationCount, setNotificationCount] = useState(4);
-
-  const handleDeleteImage = (id) => {
-    console.log(`Attempting to delete image ID: ${id}`);
-    setSnackbarMessage(`Image ID ${id} deleted successfully (simulated).`);
-    setSnackbarSeverity('success');
-    setSnackbarOpen(true);
-  };
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
-
-  const handleNotificationClick = () => {
-    console.log("Notifications clicked!");
-    setNotificationCount(0);
-    setSnackbarMessage('Notifications viewed.');
-    setSnackbarSeverity('info');
-    setSnackbarOpen(true);
-  };
-
-  return (
-    <Box
-      sx={{
-        p: { xs: 2, md: 4 },
-        backgroundColor: '#f5f5f5',
-        minHeight: '100vh',
-        fontFamily: 'Inter, sans-serif',
-      }}
-    >
-      <Paper
+// Placeholder for the "Ad Post Page" component using MUI
+const AdPostPage = ({ url }) => (
+  <Box
+    sx={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh',
+      backgroundColor: '#f5f5f5',
+      p: 4,
+    }}
+  >
+    <Paper elevation={4} sx={{ p: 4, borderRadius: 2, textAlign: 'center', maxWidth: 600 }}>
+      <Typography variant="h4" component="h2" gutterBottom>
+        Ad Post Content Page
+      </Typography>
+      <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+        This is a placeholder page that would be loaded after a user clicks on a banner. In a real
+        application, this page would show specific product details or a landing page.
+      </Typography>
+      <Box
         sx={{
-          p: { xs: 2, sm: 3, md: 4 },
-          ml: { xs: 0, md: '272px' }, 
-          borderRadius: '12px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-          width: { xs: '100%', md: 'calc(100% - 272px)' }, 
+          backgroundColor: '#e0e0e0',
+          p: 2,
+          borderRadius: 1,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
         }}
       >
-        {/* Header Section with Search and Notification */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, flexWrap: 'wrap', gap: { xs: 2, md: 3 } }}>
-          <Typography variant="h5" component="h1" sx={{ fontWeight: 'bold', color: '#333' }}>
-            Admin Panel - Image Management
-          </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 2, md: 3 }, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-            {/* Search input - simplified */}
-            <TextField
-              variant="outlined"
-              size="small"
-              placeholder="Quick search"
-              sx={{ borderRadius: '8px', '& .MuiOutlinedInput-root': { borderRadius: '8px' } }}
-            />
-            {/* Notification Bell with Badge */}
-            <IconButton
-              color="inherit"
-              onClick={handleNotificationClick}
-              sx={{ p: 1, borderRadius: '50%', backgroundColor: 'white', boxShadow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Badge badgeContent={notificationCount} color="error" overlap="circular">
-                <NotificationsIcon sx={{ fontSize: '24px', color: '#666' }} />
-              </Badge>
-            </IconButton>
+        <Typography variant="subtitle1" component="span" sx={{ fontWeight: 'bold' }}>
+          Redirected from:
+        </Typography>{' '}
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          {url}
+        </a>
+      </Box>
+      <Button
+        variant="contained"
+        onClick={() => window.history.back()}
+        sx={{ mt: 3, borderRadius: 50, px: 3, py: 1 }}
+      >
+        Go Back to Carousel
+      </Button>
+    </Paper>
+  </Box>
+);
+
+// The Carousel component itself using MUI
+const AdPostCarousel = ({ posts }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const prevSlide = () => {
+    setActiveIndex((prevIndex) => (prevIndex === 0 ? posts.length - 1 : prevIndex - 1));
+  };
+
+  const nextSlide = () => {
+    setActiveIndex((prevIndex) => (prevIndex === posts.length - 1 ? 0 : prevIndex + 1));
+  };
+
+  if (!posts || posts.length === 0) {
+    return (
+      <Box sx={{ textAlign: 'center', color: 'text.secondary', p: 4 }}>
+        No banners to display.
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ position: 'relative', width: '100%', overflow: 'hidden', borderRadius: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          transition: 'transform 500ms ease-in-out',
+          transform: `translateX(-${activeIndex * 100}%)`,
+        }}
+      >
+        {posts.map((post, index) => (
+          <Box
+            key={post.id}
+            sx={{ flexShrink: 0, width: '100%' }}
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.pushState({}, '', `/adpost/${post.id}`);
+            }}
+          >
+            <a href="#">
+              <Box
+                component="img"
+                src={post.imageUrl}
+                alt={`Banner Ad ${index + 1}`}
+                sx={{
+                  width: '100%',
+                  height: 400,
+                  objectFit: 'cover',
+                  display: 'block',
+                }}
+                onError={(e) => { e.target.src = "https://placehold.co/1200x400/E5E7EB/4B5563?text=Image+Not+Found" }}
+              />
+            </a>
           </Box>
-        </Box>
+        ))}
+      </Box>
 
+      {/* Navigation Buttons */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          px: 2,
+        }}
+      >
+        <IconButton onClick={prevSlide} sx={{ color: 'white', backgroundColor: 'rgba(0,0,0,0.5)', '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' } }}>
+          <ChevronLeft />
+        </IconButton>
+        <IconButton onClick={nextSlide} sx={{ color: 'white', backgroundColor: 'rgba(0,0,0,0.5)', '&:hover': { backgroundColor: 'rgba(0,0,0,0.7)' } }}>
+          <ChevronRight />
+        </IconButton>
+      </Box>
 
-        {/* Add Image Button */}
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 4 }}>
-          <Link href="/admin/addPost" passHref legacyBehavior>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              sx={{
-                borderRadius: '8px',
-                textTransform: 'none',
-                backgroundColor: '#4A00B8',
-                '&:hover': {
-                  backgroundColor: '#3A008F',
-                },
-                boxShadow: '0 4px 10px rgba(74, 0, 184, 0.2)',
-              }}
-            >
-              Add New Image
-            </Button>
-          </Link>
-        </Box>
-
-        {/* All Uploaded Images Grid */}
-        <Typography variant="h6" fontWeight="medium" gutterBottom sx={{ mb: 2, color: '#555' }}>
-          All Images
-        </Typography>
-        <Grid container spacing={3}>
-          {uploadedImages.map((item) => (
-            <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
-              <Card sx={{ borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.08)' }}>
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={item.url}
-                  alt={item.title}
-                  sx={{ borderRadius: '8px 8px 0 0', objectFit: 'cover' }}
-                />
-                <CardContent sx={{ p: 2 }}>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: '#333' }}>{item.title}</Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                    Uploaded on: {new Date().toLocaleDateString()}
-                  </Typography>
-                </CardContent>
-                <CardActions sx={{ justifyContent: 'flex-end', p: 2, pt: 0 }}>
-                  <Button
-                    size="small"
-                    color="error"
-                    onClick={() => handleDeleteImage(item.id)}
-                    sx={{
-                      textTransform: 'none',
-                      borderRadius: '8px',
-                      '&:hover': {
-                        backgroundColor: 'rgba(220, 53, 69, 0.08)',
-                      },
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Paper>
-
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+      {/* Dots Indicator */}
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 16,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          gap: 1,
+        }}
+      >
+        {posts.map((_, index) => (
+          <Box
+            key={index}
+            onClick={() => setActiveIndex(index)}
+            sx={{
+              width: 12,
+              height: 12,
+              borderRadius: '50%',
+              backgroundColor: index === activeIndex ? 'white' : 'rgba(255,255,255,0.5)',
+              transition: 'background-color 300ms',
+              cursor: 'pointer',
+            }}
+          />
+        ))}
+      </Box>
     </Box>
   );
-}
+};
+
+// Main App Component
+const App = () => {
+  const [adPosts, setAdPosts] = useState(adPostsData);
+  const [newImageUrl, setNewImageUrl] = useState('');
+  const [newRedirectUrl, setNewRedirectUrl] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [currentPage, setCurrentPage] = useState('/');
+
+  // Simulate routing for the ad post page
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPage(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    setCurrentPage(path);
+  }, []);
+
+  const handleAddOrUpdatePost = (e) => {
+    e.preventDefault();
+    if (!newImageUrl || !newRedirectUrl) return;
+
+    if (editingId) {
+      setAdPosts(
+        adPosts.map((post) =>
+          post.id === editingId
+            ? { ...post, imageUrl: newImageUrl, redirectUrl: newRedirectUrl }
+            : post
+        )
+      );
+    } else {
+      const newId = adPosts.length > 0 ? Math.max(...adPosts.map((p) => p.id)) + 1 : 1;
+      setAdPosts([...adPosts, { id: newId, imageUrl: newImageUrl, redirectUrl: newRedirectUrl }]);
+    }
+    setNewImageUrl('');
+    setNewRedirectUrl('');
+    setEditingId(null);
+  };
+
+  const handleEditPost = (post) => {
+    setNewImageUrl(post.imageUrl);
+    setNewRedirectUrl(post.redirectUrl);
+    setEditingId(post.id);
+  };
+
+  const handleDeletePost = (id) => {
+    setAdPosts(adPosts.filter((post) => post.id !== id));
+  };
+  
+  if (currentPage.startsWith('/adpost/')) {
+    const postId = parseInt(currentPage.split('/')[2]);
+    const adPost = adPosts.find((post) => post.id === postId);
+    if (adPost) {
+      return <AdPostPage url={adPost.redirectUrl} />;
+    } else {
+      return (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            backgroundColor: '#f5f5f5',
+          }}
+        >
+          <Typography variant="body1" color="text.secondary">
+            Ad Post Not Found
+          </Typography>
+        </Box>
+      );
+    }
+  }
+
+  return (
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        {/* Banner Ad Carousel */}
+        <Paper elevation={4} sx={{ p: 3, borderRadius: 2 }}>
+          <Typography variant="h4" component="h2" align="center" gutterBottom>
+            Featured Banners
+          </Typography>
+          <AdPostCarousel posts={adPosts} />
+        </Paper>
+
+        {/* Admin Management Section */}
+        <Paper elevation={4} sx={{ p: 3, borderRadius: 2 }}>
+          <Typography variant="h5" component="h3" gutterBottom>
+            {editingId ? 'Edit Ad Post' : 'Add New Ad Post'}
+          </Typography>
+          <Box component="form" onSubmit={handleAddOrUpdatePost} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              label="Image URL"
+              variant="outlined"
+              fullWidth
+              value={newImageUrl}
+              onChange={(e) => setNewImageUrl(e.target.value)}
+              placeholder="Paste image URL here"
+            />
+            <TextField
+              label="Redirect URL"
+              variant="outlined"
+              fullWidth
+              value={newRedirectUrl}
+              onChange={(e) => setNewRedirectUrl(e.target.value)}
+              placeholder="https://example.com/product-page"
+            />
+            <Button type="submit" variant="contained" fullWidth sx={{ py: 1.5, borderRadius: 1 }}>
+              {editingId ? 'Update Ad Post' : 'Add Ad Post'}
+            </Button>
+          </Box>
+        </Paper>
+
+        {/* Existing Ad Posts List */}
+        <Paper elevation={4} sx={{ p: 3, borderRadius: 2 }}>
+          <Typography variant="h5" component="h3" gutterBottom>
+            Existing Ad Posts
+          </Typography>
+          <List>
+            {adPosts.map((post) => (
+              <ListItem key={post.id} sx={{ border: '1px solid #e0e0e0', borderRadius: 1, my: 1, p: 1 }}>
+                <ListItemAvatar>
+                  <Avatar variant="square" src={post.imageUrl} sx={{ width: 56, height: 56 }} onError={(e) => { e.target.src = "https://placehold.co/56x56/E5E7EB/4B5563?text=No+Img" }} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={<Typography noWrap>{post.imageUrl}</Typography>}
+                  secondary={<Typography variant="body2" color="text.secondary" noWrap>{post.redirectUrl}</Typography>}
+                />
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" onClick={() => handleEditPost(post)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton edge="end" onClick={() => handleDeletePost(post.id)} sx={{ ml: 1 }}>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        </Paper>
+      </Box>
+    </Container>
+  );
+};
+
+export default App;
