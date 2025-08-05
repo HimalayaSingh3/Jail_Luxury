@@ -1,5 +1,5 @@
-"use client"
-import React, { useState, useEffect } from 'react';
+"use client";
+import React, { useState } from 'react';
 import {
   Container,
   Box,
@@ -16,14 +16,28 @@ import {
   Avatar,
   Input
 } from '@mui/material';
-import { Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon, CloudUpload as CloudUploadIcon } from '@mui/icons-material';
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Add as AddIcon,
+  CloudUpload as CloudUploadIcon
+} from '@mui/icons-material';
 
+// 🔁 Function to return default image based on category name
+const getDefaultImageForCategory = (name) => {
+  const map = {
+    electronics: 'https://cdn.pixabay.com/photo/2016/11/29/03/48/electronics-1867151_960_720.jpg',
+    books: 'https://cdn.pixabay.com/photo/2017/01/18/16/06/books-1990425_960_720.jpg',
+    clothing: 'https://cdn.pixabay.com/photo/2016/09/22/10/44/clothing-1686884_960_720.jpg',
+  };
+  return map[name.toLowerCase()] || 'https://placehold.co/100x100?text=No+Image';
+};
 
 const CategoryManager = () => {
   const [categories, setCategories] = useState([
-    { id: 1, name: 'Electronics', imageUrl: 'https://cdn.pixabay.com/photo/2016/11/29/03/48/electronics-1867151_960_720.jpg' },
-    { id: 2, name: 'Books', imageUrl: 'https://cdn.pixabay.com/photo/2017/01/18/16/06/books-1990425_960_720.jpg' },
-    { id: 3, name: 'Clothing', imageUrl: 'https://cdn.pixabay.com/photo/2016/09/22/10/44/clothing-1686884_960_720.jpg' },
+    { id: 1, name: 'Electronics', imageUrl: getDefaultImageForCategory('Electronics') },
+    { id: 2, name: 'Books', imageUrl: getDefaultImageForCategory('Books') },
+    { id: 3, name: 'Clothing', imageUrl: getDefaultImageForCategory('Clothing') },
   ]);
 
   const [categoryName, setCategoryName] = useState('');
@@ -44,29 +58,31 @@ const CategoryManager = () => {
 
   const handleSaveCategory = (e) => {
     e.preventDefault();
-
-    if (categoryName.trim() === '') {
-      return;
-    }
+    if (categoryName.trim() === '') return;
 
     if (editingCategoryId) {
-      setCategories(categories.map(cat => 
+      setCategories(categories.map(cat =>
         cat.id === editingCategoryId
-          ? { ...cat, name: categoryName, imageUrl: previewImage || cat.imageUrl }
+          ? { ...cat, name: categoryName, imageUrl: previewImage || getDefaultImageForCategory(categoryName) }
           : cat
       ));
       setEditingCategoryId(null);
     } else {
       const newId = categories.length > 0 ? Math.max(...categories.map(c => c.id)) + 1 : 1;
-      const newCategory = { id: newId, name: categoryName, imageUrl: previewImage || '' };
+      const newCategory = {
+        id: newId,
+        name: categoryName,
+        imageUrl: previewImage || getDefaultImageForCategory(categoryName),
+      };
       setCategories([...categories, newCategory]);
     }
-    
+
+    // Reset form
     setCategoryName('');
     setCategoryImage(null);
     setPreviewImage(null);
   };
-  
+
   const handleEditCategory = (category) => {
     setEditingCategoryId(category.id);
     setCategoryName(category.name);
@@ -80,11 +96,15 @@ const CategoryManager = () => {
   return (
     <Container maxWidth="sm" sx={{ py: 4 }}>
       <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
-        <Typography variant="h5" component="h2" gutterBottom align="center">
+        <Typography variant="h5" align="center" gutterBottom>
           {editingCategoryId ? 'Update Category' : 'Add New Category'}
         </Typography>
 
-        <Box component="form" onSubmit={handleSaveCategory} sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
+        <Box
+          component="form"
+          onSubmit={handleSaveCategory}
+          sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}
+        >
           <TextField
             fullWidth
             label="Category Name"
@@ -93,6 +113,7 @@ const CategoryManager = () => {
             onChange={(e) => setCategoryName(e.target.value)}
             placeholder="Enter category name"
           />
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Button
               variant="contained"
@@ -112,6 +133,7 @@ const CategoryManager = () => {
               />
             )}
           </Box>
+
           <Button
             type="submit"
             variant="contained"
@@ -123,9 +145,10 @@ const CategoryManager = () => {
           </Button>
         </Box>
 
-        <Typography variant="h6" component="h3" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           All Categories
         </Typography>
+
         <List>
           {categories.map((category) => (
             <ListItem
@@ -134,14 +157,12 @@ const CategoryManager = () => {
               sx={{ '&:last-child': { borderBottom: 'none' } }}
             >
               <ListItemAvatar>
-                {category.imageUrl && (
-                  <Avatar
-                    src={category.imageUrl}
-                    alt={category.name}
-                    variant="rounded"
-                    sx={{ width: 50, height: 50, objectFit: 'cover' }}
-                  />
-                )}
+                <Avatar
+                  src={category.imageUrl}
+                  alt={category.name}
+                  variant="rounded"
+                  sx={{ width: 50, height: 50, objectFit: 'cover' }}
+                />
               </ListItemAvatar>
               <ListItemText primary={category.name} sx={{ ml: 2 }} />
               <ListItemSecondaryAction>
