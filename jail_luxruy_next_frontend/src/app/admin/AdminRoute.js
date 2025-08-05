@@ -5,9 +5,8 @@ import { Box } from "@mui/material";
 
 const AdminRoute = ({ children }) => {
   return (
-    <Box sx={{ display: "flex" }}>
-      
-      <Box component="main" sx={{ flex: 1, p: 4 }}>
+    <Box>
+      <Box component="main" sx={{ flex: 1, width: "100%" }}>
         {children}
       </Box>
     </Box>
