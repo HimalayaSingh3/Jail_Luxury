@@ -1,26 +1,33 @@
-const express = require('express');
-// const Ad = require('./models/Ad');
-// const upload = require('./utils/upload');
+const express = require("express");
 const router = express.Router();
+const upload = require("../utils/upload");
+const Ad = require("../models/Ad");
+const cloudinary = require("../config/cloudinary");
 
-// POST /api/admin/upload-ad
-router.post('/api/admin/upload-ad', upload.single('image'), async (req, res) => {
-  try {
-    const { title, description, price } = req.body;
-    if (!req.file) return res.status(400).json({ error: 'Image is required' });
+router.post(
+  "/api/admin/upload-ad",
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      if (!req.file)
+        return res.status(400).json({ error: "Image is required" });
 
-    const newAd = await Ad.create({
-      title,
-      description,
-      price,
-      imageUrl: `/uploads/${req.file.filename}`,
-    });
+      const cloudResult = await cloudinary.uploader.upload(req.file.path, {
+        folder: "ads",
+      });
 
-    res.status(201).json({ message: 'Ad uploaded successfully', ad: newAd });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Upload failed' });
+      // Save to DB
+      const newAd = await Ad.create({
+        image: req.file.filename,
+        imageUrl: cloudResult.secure_url,
+      });
+
+      res.status(201).json({ message: "Ad uploaded successfully", ad: newAd });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Upload failed" });
+    }
   }
-});
+);
 
 module.exports = router;
