@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import sequelize from "../config/connection.js";
 
 const orderSchema = mongoose.Schema(
   {
