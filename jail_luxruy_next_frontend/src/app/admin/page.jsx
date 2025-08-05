@@ -28,28 +28,28 @@ import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-// const authService = {
-//   isAuthenticated: () => {
-//     return localStorage.getItem("isLoggedIn") === "true";
-//   },
-//   getUserRole: () => {
-//     return localStorage.getItem("userRole") || "guest";
-//   },
-//   login: (username, password) => {
-//     if (username === "admin" && password === "password") {
-//       localStorage.setItem("isLoggedIn", "true");
-//       localStorage.setItem("userRole", "admin");
-//       return true;
-//     }
-//     localStorage.setItem("isLoggedIn", "false");
-//     localStorage.setItem("userRole", "guest");
-//     return false;
-//   },
-//   logout: () => {
-//     localStorage.removeItem("isLoggedIn");
-//     localStorage.removeItem("userRole");
-//   },
-// };
+const authService = {
+  isAuthenticated: () => {
+    return localStorage.getItem("isLoggedIn") === "true";
+  },
+  getUserRole: () => {
+    return localStorage.getItem("userRole") || "guest";
+  },
+  login: (username, password) => {
+    if (username === "admin" && password === "password") {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userRole", "admin");
+      return true;
+    }
+    localStorage.setItem("isLoggedIn", "false");
+    localStorage.setItem("userRole", "guest");
+    return false;
+  },
+  logout: () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
+  },
+};
 
 const menuItems = [
   { text: "Dashboard", icon: <DashboardIcon />, path: "/admin/dashboard", displayOn: 'all' },
@@ -117,50 +117,50 @@ const AdminSidebar = ({ onClose }) => {
 };
 
 const AdminRoute = ({ children }) => {
-  // const router = useRouter();
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // const [isAdmin, setIsAdmin] = useState(false);
-  // const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const checkAuth = () => {
-  //     const loggedIn = authService.isAuthenticated();
-  //     const role = authService.getUserRole();
-  //     setIsAuthenticated(loggedIn);
-  //     setIsAdmin(loggedIn && role === "admin");
-  //     setLoading(false);
-  //     if (!loggedIn) router.push("/login-signup");
-  //   };
-  //   checkAuth();
-  // }, [router]);
+  useEffect(() => {
+    const checkAuth = () => {
+      const loggedIn = authService.isAuthenticated();
+      const role = authService.getUserRole();
+      setIsAuthenticated(loggedIn);
+      setIsAdmin(loggedIn && role === "admin");
+      setLoading(false);
+      if (!loggedIn) router.push("/login-signup");
+    };
+    checkAuth();
+  }, [router]);
 
-  // if (loading) {
-  //   return (
-  //     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-  //       <Typography>Loading authentication...</Typography>
-  //     </Box>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <Typography>Loading authentication...</Typography>
+      </Box>
+    );
+  }
 
-  // if (!isAuthenticated) {
-  //   return (
-  //     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="error.light">
-  //       <Typography>You need to log in to access this page.</Typography>
-  //     </Box>
-  //   );
-  // }
+  if (!isAuthenticated) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="error.light">
+        <Typography>You need to log in to access this page.</Typography>
+      </Box>
+    );
+  }
 
-  // if (!isAdmin) {
-  //   return (
-  //     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="warning.light">
-  //       <Typography>You do not have administrative access to view this page.</Typography>
-  //     </Box>
-  //   );
-  // }
+  if (!isAdmin) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="warning.light">
+        <Typography>You do not have administrative access to view this page.</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box display="flex" minHeight="100vh">
-      
+      <AdminSidebar />
       <Box component="main" flex={1} p={4} bgcolor="grey.100">
         {children}
       </Box>
@@ -171,16 +171,7 @@ const AdminRoute = ({ children }) => {
 const AdminPage = () => {
   return (
     <AdminRoute>
-      <Typography variant="h4" gutterBottom>Welcome to Admin Panel</Typography>
-      <Typography variant="body1" color="textSecondary">
-        This content is only visible to authenticated administrators.
-      </Typography>
-      <Box mt={4} p={3} bgcolor="white" borderRadius={2} boxShadow={2}>
-        <Typography variant="h5" gutterBottom>Dashboard Overview</Typography>
-        <Typography>
-          Here you can manage users, products, orders, and settings.
-        </Typography>
-      </Box>
+      <h1>Welcome to Admin Panel</h1>
     </AdminRoute>
   );
 };
