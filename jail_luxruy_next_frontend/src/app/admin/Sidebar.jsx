@@ -1,4 +1,4 @@
-//============For Admin Panel=========/
+// Sidebar.jsx
 "use client";
 import React from "react";
 import {
@@ -8,6 +8,9 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Drawer,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
@@ -16,78 +19,127 @@ import CategoryIcon from "@mui/icons-material/Category";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import ArticleIcon from "@mui/icons-material/Article";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { usePathname, useRouter } from "next/navigation";
-import ProfileBtn from "@/components/buttons/profileBtn";
+import { Logout } from "@mui/icons-material";
 
 const menuItems = [
-  { text: "Dashboard", icon: <DashboardIcon />, path: "/admin/dashboard" },
-  { text: "Users", icon: <GroupIcon />, path: "/admin/users" },
-  { text: "Orders", icon: <Inventory2Icon />, path: "/admin/orders" },
-  { text: "Add Products", icon: <CategoryIcon />, path: "/admin/products" },
-  { text: "All Products", icon: <CategoryIcon />, path: "/admin/AllProducts " },
-  { text: "Analysis", icon: <AnalyticsIcon />, path: "/admin/analysis" },
-  { text: "Blogs", icon: <ArticleIcon />, path: "/admin/blogs" },
-  { text: "Tickets", icon: <ConfirmationNumberIcon />, path: "/admin/tickets" },
+  { text: "Dashboard", icon: <DashboardIcon />, path: "/admin/dashboard", displayOn: 'all' },
+  { text: "Users", icon: <GroupIcon />, path: "/admin/users", displayOn: 'all' },
+  { text: "Orders", icon: <Inventory2Icon />, path: "/admin/orders", displayOn: 'all' },
+  { text: "AllProducts", icon: <CategoryIcon />, path: "/admin/AllProducts", displayOn: 'all' },
+  { text: "Analysis", icon: <AnalyticsIcon />, path: "/admin/analysis", displayOn: 'desktop' },
+  { text: "Blogs", icon: <ArticleIcon />, path: "/admin/blogs", displayOn: 'desktop' },
+  { text: "Tickets", icon: <ConfirmationNumberIcon />, path: "/admin/tickets", displayOn: 'all' },
+  { text: "Mobile Settings", icon: <SettingsIcon />, path: "/admin/settings", displayOn: 'mobile' },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ open, onClose }) => {
   const pathname = usePathname();
   const router = useRouter();
+  const theme = useTheme();
+  const isMobileOrTablet = useMediaQuery(theme.breakpoints.down('md'));
 
-  return (
+  const filteredMenuItems = menuItems.filter(item => {
+    if (item.displayOn === 'all') return true;
+    if (item.displayOn === 'mobile' && isMobileOrTablet) return true;
+    if (item.displayOn === 'desktop' && !isMobileOrTablet) return true;
+    return false;
+  });
+
+  const drawerContent = (
     <Box
       sx={{
         width: 250,
         bgcolor: "#fff",
         height: "100vh",
-        borderRight: "1px solid #e0e0e0",
+        borderRight: isMobileOrTablet ? 'none' : "1px solid #e0e0e0",
         py: 2,
+        overflowY: 'auto',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-        <Button
-          sx={{
-            background: "blue",
-            color: "white",
-            px: 4, 
-            "&:hover": {
-              background: "#0033cc", 
-            },
-          }}
-        >
-          Profile
-        </Button>
+      <Box sx={{ p: 2, textAlign: 'center' }}>
+        {/* Replace with your logo */}
+        <img src="\webps\homePageLogoLight.webp" alt="LavaBiz Logo" style={{ width: 120 }} />
       </Box>
 
-      <List>
-        {menuItems.map((item) => {
-          const isActive = pathname === item.path;
-
+      <List sx={{ flexGrow: 1 }}>
+        {filteredMenuItems.map((item) => {
+          const isActive = pathname.startsWith(item.path);
           return (
             <ListItemButton
               key={item.text}
-              selected={isActive}
-              onClick={() => router.push(item.path)}
+              onClick={() => {
+                router.push(item.path);
+                if (isMobileOrTablet) {
+                  onClose();
+                }
+              }}
               sx={{
                 mx: 1,
-                mb: 1,
+                my: 1,
                 borderRadius: 2,
-                bgcolor: isActive ? "#1e293b" : "#f5f5f5",
-                color: isActive ? "#fff" : "#333",
+                bgcolor: isActive ? "#1e293b" : "#fff",
+                color: isActive ? "#fff" : "#1e293b",
                 "&:hover": {
-                  bgcolor: isActive ? "#1e293b" : "#e0e0e0",
+                  bgcolor: "#6b7280",
+                  color: "#fff",
+                  "& .MuiListItemIcon-root": {
+                    color: "#fff",
+                  },
                 },
               }}
             >
-              <ListItemIcon sx={{ color: isActive ? "#fff" : "#666" }}>
+              <ListItemIcon
+                sx={{
+                  color: isActive ? "#fff" : "#1e293b",
+                  minWidth: 36,
+                }}
+              >
                 {item.icon}
               </ListItemIcon>
-              <ListItemText primary={item.text} />
+              <ListItemText
+                primary={item.text}
+                sx={{ span: { fontWeight: isActive ? "600" : "400" } }}
+              />
             </ListItemButton>
           );
         })}
       </List>
+
+      <Box sx={{ mt: 'auto', p: 2 }}>
+         <ListItemButton sx={{ mx: 1, mb: 1, borderRadius: 2 }}>
+            <ListItemIcon sx={{ minWidth: 36, color: '#1e293b' }}><Logout /></ListItemIcon>
+            <ListItemText primary="Logout" />
+         </ListItemButton>
+      </Box>
     </Box>
+  );
+
+  return (
+    <>
+      {isMobileOrTablet ? (
+        <Drawer
+          anchor="left"
+          open={open}
+          onClose={onClose}
+          ModalProps={{ keepMounted: true }}
+          sx={{
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: 250,
+            },
+          }}
+        >
+          {drawerContent}
+        </Drawer>
+      ) : (
+        drawerContent
+      )}
+    </>
   );
 };
 
