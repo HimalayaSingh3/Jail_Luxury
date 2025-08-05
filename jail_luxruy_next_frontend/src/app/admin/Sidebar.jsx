@@ -15,13 +15,15 @@ import {
   Dashboard as DashboardIcon,
   Group as GroupIcon,
   Inventory2 as Inventory2Icon,
-  Category as CategoryIcon,
+  Category as CategoryIcon,              
   Analytics as AnalyticsIcon,
   Article as ArticleIcon,
   ConfirmationNumber as ConfirmationNumberIcon,
   Settings as SettingsIcon,
   Logout,
+  Person as ProfileIcon,                 
 } from '@mui/icons-material';
+
 
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -30,8 +32,9 @@ const menuItems = [
   { text: 'Users', icon: <GroupIcon />, path: '/admin/users', displayOn: 'all' },
   { text: 'Orders', icon: <Inventory2Icon />, path: '/admin/orders', displayOn: 'all' },
   { text: 'AllProducts', icon: <CategoryIcon />, path: '/admin/AllProducts', displayOn: 'all' },
-  { text: 'Post', icon: <AnalyticsIcon />, path: '/admin/post', displayOn: 'all' },
-  { text: 'Mobile Settings', icon: <SettingsIcon />, path: '/admin/settings', displayOn: 'mobile' },
+  { text: 'Post', icon: <AnalyticsIcon />, path: '/admin/post', displayOn: 'all' },  
+  { text: 'Category', icon: <CategoryIcon />, path: '/admin/category', displayOn: 'all' },
+  { text: 'Profile', icon: <ProfileIcon/>, path: '/admin/profile', displayOn: 'mobile' },
 ];
 
 const Sidebar = ({ open, onClose }) => {
@@ -64,7 +67,7 @@ const Sidebar = ({ open, onClose }) => {
       <Box sx={{ p: 2, textAlign: 'center' }}>
         <img
           src="/webps/homePageLogoLight.webp"
-          alt="LavaBiz Logo"
+          alt="Jail luxury"
           style={{ width: 120, height: 'auto' }}
         />
       </Box>
