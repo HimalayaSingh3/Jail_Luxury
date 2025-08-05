@@ -1,224 +1,163 @@
-"use client";
-import React, { useState, useEffect } from "react";
+"use client"
+import React, { useState, useEffect } from 'react';
 import {
+  Container,
   Box,
-  Button,
   Typography,
-  Grid,
+  Button,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
   Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Divider,
-} from "@mui/material";
-import { toast } from "react-toastify";
-import CategoryForm from "@/components/CategoryForm";
-// import CategoryForm from "./components/CategoryForm";
+  ListItemAvatar,
+  Avatar,
+  Input
+} from '@mui/material';
+import { Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon, CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 
-const CategoryList = () => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  const [name, setName] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [updatingName, setUpdatingName] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
+const CategoryManager = () => {
+  const [categories, setCategories] = useState([
+    { id: 1, name: 'Electronics', imageUrl: 'https://cdn.pixabay.com/photo/2016/11/29/03/48/electronics-1867151_960_720.jpg' },
+    { id: 2, name: 'Books', imageUrl: 'https://cdn.pixabay.com/photo/2017/01/18/16/06/books-1990425_960_720.jpg' },
+    { id: 3, name: 'Clothing', imageUrl: 'https://cdn.pixabay.com/photo/2016/09/22/10/44/clothing-1686884_960_720.jpg' },
+  ]);
 
-  // Fetch all categories
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/categories");
-      if (!res.ok) throw new Error("Failed to fetch categories");
-      const data = await res.json();
-      setCategories(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  const [categoryName, setCategoryName] = useState('');
+  const [categoryImage, setCategoryImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [editingCategoryId, setEditingCategoryId] = useState(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCategoryImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    } else {
+      setCategoryImage(null);
+      setPreviewImage(null);
     }
   };
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  // Create category
-  const handleCreateCategory = async (e) => {
+  const handleSaveCategory = (e) => {
     e.preventDefault();
-    if (!name.trim()) return toast.error("Category name is required");
 
-    try {
-      const res = await fetch("/api/categories", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Creation failed");
-
-      toast.success(`'${data.name}' created successfully!`);
-      setName("");
-      fetchCategories();
-    } catch (err) {
-      toast.error(err.message);
+    if (categoryName.trim() === '') {
+      return;
     }
+
+    if (editingCategoryId) {
+      setCategories(categories.map(cat => 
+        cat.id === editingCategoryId
+          ? { ...cat, name: categoryName, imageUrl: previewImage || cat.imageUrl }
+          : cat
+      ));
+      setEditingCategoryId(null);
+    } else {
+      const newId = categories.length > 0 ? Math.max(...categories.map(c => c.id)) + 1 : 1;
+      const newCategory = { id: newId, name: categoryName, imageUrl: previewImage || '' };
+      setCategories([...categories, newCategory]);
+    }
+    
+    setCategoryName('');
+    setCategoryImage(null);
+    setPreviewImage(null);
+  };
+  
+  const handleEditCategory = (category) => {
+    setEditingCategoryId(category.id);
+    setCategoryName(category.name);
+    setPreviewImage(category.imageUrl);
   };
 
-  // Update category
-  const handleUpdateCategory = async (e) => {
-    e.preventDefault();
-    if (!updatingName.trim()) return toast.error("Category name is required");
-
-    try {
-      const res = await fetch(`/api/categories/${selectedCategory._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: updatingName }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Update failed");
-
-      toast.success(`'${data.name}' updated successfully!`);
-      setModalVisible(false);
-      setSelectedCategory(null);
-      setUpdatingName("");
-      fetchCategories();
-    } catch (err) {
-      toast.error(err.message);
-    }
+  const handleDeleteCategory = (id) => {
+    setCategories(categories.filter(cat => cat.id !== id));
   };
-
-  // Delete category
-  const handleDeleteCategory = async () => {
-    try {
-      const res = await fetch(`/api/categories/${selectedCategory._id}`, {
-        method: "DELETE",
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Delete failed");
-
-      toast.success(`'${data.name}' deleted successfully!`);
-      setModalVisible(false);
-      setSelectedCategory(null);
-      fetchCategories();
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
-
-  if (loading) {
-    return (
-      <Paper sx={{ p: 4, borderRadius: "12px" }}>
-        <Typography>Loading categories...</Typography>
-      </Paper>
-    );
-  }
-
-  if (error) {
-    return (
-      <Paper sx={{ p: 4, borderRadius: "12px" }}>
-        <Typography color="error">Error: {error}</Typography>
-      </Paper>
-    );
-  }
 
   return (
-    <Paper
-      elevation={3}
-      sx={{
-        p: { xs: 2, sm: 3, md: 4 },
-        borderRadius: "12px",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-        width: "100%",
-        maxWidth: "lg",
-        mx: "auto",
-      }}
-    >
-      <Box sx={{ p: { xs: 1, sm: 2 } }}>
-        <Typography
-          variant="h5"
-          gutterBottom
-          sx={{ mb: 3, fontWeight: "bold", color: "#333" }}
-        >
-          Manage Categories
+    <Container maxWidth="sm" sx={{ py: 4 }}>
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+        <Typography variant="h5" component="h2" gutterBottom align="center">
+          {editingCategoryId ? 'Update Category' : 'Add New Category'}
         </Typography>
 
-        <CategoryForm
-          value={name}
-          setValue={setName}
-          handleSubmit={handleCreateCategory}
-          buttonText="Add Category"
-        />
-
-        <Divider sx={{ my: 3 }} />
-
-        <Typography variant="h6" sx={{ mb: 2, color: "#555" }}>
-          Existing Categories
-        </Typography>
-
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          {categories.length === 0 ? (
-            <Typography>No categories found.</Typography>
-          ) : (
-            categories.map((category) => (
-              <Grid item key={category._id}>
-                <Button
-                  variant="contained"
-                  color="warning"
-                  sx={{
-                    borderRadius: "8px",
-                    textTransform: "none",
-                    px: 3,
-                    py: 1.5,
-                    backgroundColor: "#F59E0B",
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "#D97706",
-                    },
-                  }}
-                  onClick={() => {
-                    setSelectedCategory(category);
-                    setUpdatingName(category.name);
-                    setModalVisible(true);
-                  }}
-                >
-                  {category.name}
-                </Button>
-              </Grid>
-            ))
-          )}
-        </Grid>
-
-        {/* Dialog for Edit/Delete */}
-        <Dialog open={modalVisible} onClose={() => setModalVisible(false)} maxWidth="sm" fullWidth>
-          <DialogTitle sx={{ fontWeight: "bold", color: "#333" }}>
-            {selectedCategory ? `Edit: ${selectedCategory.name}` : "Update Category"}
-          </DialogTitle>
-          <DialogContent dividers>
-            <CategoryForm
-              value={updatingName}
-              setValue={setUpdatingName}
-              handleSubmit={handleUpdateCategory}
-              buttonText="Update Category"
-              handleDelete={handleDeleteCategory}
-              isUpdateForm
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setModalVisible(false)} color="secondary">
-              Cancel
+        <Box component="form" onSubmit={handleSaveCategory} sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
+          <TextField
+            fullWidth
+            label="Category Name"
+            variant="outlined"
+            value={categoryName}
+            onChange={(e) => setCategoryName(e.target.value)}
+            placeholder="Enter category name"
+          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Button
+              variant="contained"
+              component="label"
+              startIcon={<CloudUploadIcon />}
+              sx={{ flexGrow: 1 }}
+            >
+              Upload Image
+              <Input type="file" hidden accept="image/*" onChange={handleImageChange} />
             </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-    </Paper>
+            {previewImage && (
+              <Avatar
+                src={previewImage}
+                alt="Category Preview"
+                variant="rounded"
+                sx={{ width: 100, height: 100, objectFit: 'cover' }}
+              />
+            )}
+          </Box>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            startIcon={editingCategoryId ? <EditIcon /> : <AddIcon />}
+          >
+            {editingCategoryId ? 'Update Category' : 'Add Category'}
+          </Button>
+        </Box>
+
+        <Typography variant="h6" component="h3" gutterBottom>
+          All Categories
+        </Typography>
+        <List>
+          {categories.map((category) => (
+            <ListItem
+              key={category.id}
+              divider
+              sx={{ '&:last-child': { borderBottom: 'none' } }}
+            >
+              <ListItemAvatar>
+                {category.imageUrl && (
+                  <Avatar
+                    src={category.imageUrl}
+                    alt={category.name}
+                    variant="rounded"
+                    sx={{ width: 50, height: 50, objectFit: 'cover' }}
+                  />
+                )}
+              </ListItemAvatar>
+              <ListItemText primary={category.name} sx={{ ml: 2 }} />
+              <ListItemSecondaryAction>
+                <IconButton edge="end" onClick={() => handleEditCategory(category)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton edge="end" onClick={() => handleDeleteCategory(category.id)} sx={{ ml: 1 }}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+      </Paper>
+    </Container>
   );
 };
 
-export default CategoryList;
+export default CategoryManager;
