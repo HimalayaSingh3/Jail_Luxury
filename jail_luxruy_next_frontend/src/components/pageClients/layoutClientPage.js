@@ -47,7 +47,8 @@ function LayoutClientPage({ children, carouselImages, userData }) {
               {children}
               {!isAdminRoute &&
                 pathname !== "/blogs" &&
-                pathname !== "/news" && <Footer />}
+                pathname !== "/news" &&
+                pathname !== "/blogdetails" && <Footer />}
             </AppContextProvider>
           </ThemeBackgroundWrapper>
         </ThemeProviderWrapper>
