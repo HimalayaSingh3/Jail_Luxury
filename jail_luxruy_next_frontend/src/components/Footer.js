@@ -46,13 +46,14 @@ const Footer = () => {
 
   return (
     <FooterContainer>
-      <Grid container 
-      sx={{ 
-    display: { xs: "flex", md:"flex" }, 
-    flexDirection:{xs:"column", md:"row"},
-    justifyContent:{ xs:"start", md:"center"}, 
-    mt: 1 
-  }}
+      <Grid
+        container
+        sx={{
+          display: { xs: "flex", md: "flex" },
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: { xs: "start", md: "center" },
+          mt: 1,
+        }}
       >
         {/* main */}
         <Grid
@@ -75,10 +76,10 @@ const Footer = () => {
               height: "auto",
               background: "none",
               display: "block",
-              marginBottom:"14px",
-              background:"black",
-              padding:"3px",
-              borderRadius:"10px"
+              marginBottom: "14px",
+              background: "black",
+              padding: "3px",
+              borderRadius: "10px",
             }}
           />
           {[
@@ -103,7 +104,7 @@ const Footer = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            alignItems: {xs:"start", md:"center"},
+            alignItems: { xs: "start", md: "center" },
             textAlign: "center",
             borderRight: { sm: "1px solid gray" },
             p: { sm: 2 },
@@ -147,10 +148,9 @@ const Footer = () => {
             p: { sm: 2 },
             display: "flex",
             flexDirection: "column",
-             alignItems: {xs:"start", md:"center"},
+            alignItems: { xs: "start", md: "center" },
             textAlign: "center",
             borderRight: { sm: "1px solid gray" },
-
             mb: { xs: 2, sm: 0 },
           }}
         >
@@ -167,11 +167,18 @@ const Footer = () => {
           >
             Company
           </Button>
+
           <FooterLink onClick={() => handleNavigation("/about")}>
             About Us
           </FooterLink>
           <FooterLink onClick={() => handleNavigation("/contact")}>
             Contact Us
+          </FooterLink>
+          <FooterLink onClick={() => handleNavigation("/blogs")}>
+            Blogs
+          </FooterLink>
+          <FooterLink onClick={() => handleNavigation("/news")}>
+            News
           </FooterLink>
         </Grid>
 
@@ -182,7 +189,7 @@ const Footer = () => {
             p: { sm: 2 },
             display: "flex",
             flexDirection: "column",
-             alignItems: {xs:"start", md:"center"},
+            alignItems: { xs: "start", md: "center" },
             textAlign: "center",
             borderRight: { sm: "1px solid gray" },
 
@@ -232,7 +239,7 @@ const Footer = () => {
             p: { sm: 2 },
             display: "flex",
             flexDirection: "column",
-            alignItems: {xs:"start", md:"center"},
+            alignItems: { xs: "start", md: "center" },
             textAlign: "center",
             borderRight: { sm: "1px solid gray" },
 

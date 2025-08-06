@@ -9,7 +9,7 @@ import {
   Divider,
   Paper,
 } from "@mui/material";
-import { styled } from "@mui/system";
+import { bgcolor, styled } from "@mui/system";
 import { useRouter } from "next/navigation";
 
 const GradientButton = styled(Button)(({ theme }) => ({
@@ -44,7 +44,7 @@ export default function LoginComponent() {
           borderRadius: 4,
           width: "100%",
           maxWidth: { xs: 384, md: 448 },
-          backgroundColor: "rgba(255, 255, 255, 0.95)",
+          backgroundColor: "rgba(24, 91, 130, 0.95)",
           backdropFilter: "blur(5px)",
           display: "flex",
           margin: "auto",
@@ -157,3 +157,4 @@ export default function LoginComponent() {
     </Box>
   );
 }
+
