@@ -12,7 +12,6 @@ import {
 import { styled } from "@mui/system";
 import { useRouter } from "next/navigation";
 
-
 const GradientButton = styled(Button)(({ theme }) => ({
   background: "linear-gradient(45deg, #1976D2 30%, #2196F3 90%)",
   border: 0,
@@ -45,10 +44,10 @@ export default function RegisterComponent() {
           borderRadius: 4,
           width: "100%",
           maxWidth: { xs: 384, md: 448 },
-          backgroundColor: "rgba(255, 255, 255, 0.95)",
+          background: "linear-gradient(45deg, #154063ff 30%, #1976D2 90%)",
           backdropFilter: "blur(5px)",
-          display:"flex",
-          margin:"auto"
+          display: "flex",
+          margin: "auto",
         }}
       >
         <Box id="register-form">

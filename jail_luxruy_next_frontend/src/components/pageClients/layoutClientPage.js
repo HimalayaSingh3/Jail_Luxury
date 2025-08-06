@@ -31,25 +31,31 @@ function LayoutClientPage({ children, carouselImages, userData }) {
   const isAdminRoute = pathname.startsWith("/admin");
 
   return (
-    <ErrorBoundary>
-      <html lang="en">
-        <body>
-          <ThemeProviderWrapper>
-            <CssBaseline />
-            <ThemeBackgroundWrapper>
-              <AppContextProvider>
-                {!isAdminRoute && (
-                  <Navbar carouselImages={carouselImages?.data} userData={userData} />
-                )}
-                {children}
-                {!isAdminRoute && <Footer />}
-              </AppContextProvider>
-            </ThemeBackgroundWrapper>
-          </ThemeProviderWrapper>
-        </body>
-      </html>
-    </ErrorBoundary>
-  );
+  <ErrorBoundary>
+    <html lang="en">
+      <body>
+        <ThemeProviderWrapper>
+          <CssBaseline />
+          <ThemeBackgroundWrapper>
+            <AppContextProvider>
+              {!isAdminRoute && (
+                <Navbar
+                  carouselImages={carouselImages?.data}
+                  userData={userData}
+                />
+              )}
+              {children}
+              {!isAdminRoute &&
+                pathname !== "/blogs" &&
+                pathname !== "/news" && <Footer />}
+            </AppContextProvider>
+          </ThemeBackgroundWrapper>
+        </ThemeProviderWrapper>
+      </body>
+    </html>
+  </ErrorBoundary>
+);
+
 }
 
 export default LayoutClientPage;

@@ -34,6 +34,7 @@ const menuItems = [
   { text: 'AllProducts', icon: <CategoryIcon />, path: '/admin/AllProducts', displayOn: 'all' },
   { text: 'Post', icon: <AnalyticsIcon />, path: '/admin/post', displayOn: 'all' },  
   { text: 'Category', icon: <CategoryIcon />, path: '/admin/category', displayOn: 'all' },
+  { text: 'Blogs', icon: <ArticleIcon />, path: '/admin/blogs', displayOn: 'all' },
   { text: 'Profile', icon: <ProfileIcon/>, path: '/admin/profile', displayOn: 'mobile' },
 ];
 
